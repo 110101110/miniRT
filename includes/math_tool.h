@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:17:41 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/13 00:07:29 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:24:17 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #define MATH_TOOL_H
 
 # include <math.h>
-
-# ifndef M_PI
-# define M_PI 3.14159265358979323846
-# endif
 
 # define EPSILON 1e-6
 

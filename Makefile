@@ -6,7 +6,7 @@
 #    By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/13 01:23:36 by qizhang          ###   ########.fr        #
+#    Updated: 2026/01/14 12:53:54 by qizhang          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ SRC_SHARED_FILES = \
 SRC_MAND_FILES = \
 	mandatory/main.c \
 	mandatory/init/init.c \
+	mandatory/init/init_camera.c \
 	mandatory/render/render.c \
+	mandatory/render/raycast.c \
 	mandatory/render/render_utils.c \
 	mandatory/parsing/parser.c \
 	mandatory/objects/sphere.c
