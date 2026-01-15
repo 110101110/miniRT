@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/15 16:27:50 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/15 19:05:47 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct	s_light
 {
 	t_vec3		origin;
 	double		ratio;
-	t_vec3		color;
+	// t_vec3		color; not needed in mandatory
 }				t_light;
 
 typedef	enum	e_type
