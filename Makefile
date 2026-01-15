@@ -6,7 +6,7 @@
 #    By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/14 12:53:54 by qizhang          ###   ########.fr        #
+#    Updated: 2026/01/15 01:11:46 by qizhang          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRC_MAND_FILES = \
 	mandatory/render/render.c \
 	mandatory/render/raycast.c \
 	mandatory/render/render_utils.c \
+	mandatory/render/light.c \
 	mandatory/parsing/parser.c \
 	mandatory/objects/sphere.c
 

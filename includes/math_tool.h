@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:17:41 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/13 17:24:17 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/14 19:37:06 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 
 typedef struct s_vec3
 {
-	float	x;
-	float	y;
-	float	z;
+	double	x;
+	double	y;
+	double	z;
 } t_vec3;
 
 typedef t_vec3 t_color;
