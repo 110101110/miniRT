@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:06 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/15 19:39:26 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/20 00:18:45 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,22 @@ int	main(void)
 	double	aspect_ratio;
 
 	init_mlx(&data);
-	data.cam.origin = vec_init(0, 0, 0);
-	data.cam.dir = vec_init(0, 0, -1);
-	data.cam.fov = 100.0;
+	data.cam.origin = vec_init(0, 2, 0);
+	data.cam.dir = vec_normalize(vec_init(0, -0.5, -1));
+	data.cam.fov = 60;
 	aspect_ratio = (double)WIDTH / (double)HEIGHT;
-	// hardcode for testing ambient and diffuse light
-	data.light.origin = vec_init(5.0, 5.0, 5.0);
-	data.light.ratio = 1.0;
-	data.ambient.ratio = 0.4;
-	data.ambient.color = color_init(99, 244, 26);
+	data.light.origin = vec_init(0,10,-10);
+	data.light.ratio = 0.9;
+	data.ambient.ratio = 0.3;
+	data.ambient.color = color_init(255, 255, 255);
+	// hardcode sphere
+	data.sp.center = vec_init(0, -2, -10);
+	data.sp.diameter = 2.0;
+	data.sp.color = color_init(0,0, 255);
+	// hardcode plane
+	data.pl.point = vec_init(0, -4, 0);
+	data.pl.normal = vec_init(0, 1, 0);
+	data.pl.color = color_init(200,200,200);
 	init_camera(&data.cam, aspect_ratio);
 	render_scene(&data);
 	mlx_loop(data.mlx);

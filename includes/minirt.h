@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:46 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/15 01:10:50 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/20 01:26:07 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ void	img_pix_put(t_img *img, int x, int y, int color);
 t_ray	get_ray(t_camera *cam, double x, double y);
 
 // objects
-double	hit_sphere(t_ray ray, t_vec3 center, double raduis);
+double	hit_sphere(t_ray ray, t_sphere sp);
+double	hit_plane(t_ray ray, t_plane pl);
 
 // light
-t_vec3	apply_lighting(t_sphere *sp, t_vec3 hit_p, t_vec3 normal, t_data *data);
+t_vec3	apply_lighting(t_color color, t_vec3 hit_p, t_vec3 normal,
+			t_data *data);
+int		in_shadow(t_data *data, t_vec3 hit_p, t_vec3 normal);
 #endif

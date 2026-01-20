@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere.c                                           :+:      :+:    :+:   */
+/*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 01:10:24 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/16 17:11:32 by qizhang          ###   ########.fr       */
+/*   Created: 2026/01/16 16:07:19 by qizhang           #+#    #+#             */
+/*   Updated: 2026/01/19 23:57:57 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minirt.h"
 
-double	hit_sphere(t_ray ray, t_sphere sp)
+double	hit_plane(t_ray ray, t_plane pl)
 {
-	t_vec3		oc;
-	double		a;
-	double		b;
-	double		c;
-	double		disc;
-	double		radius;
+	double	t;
+	double	denom;
+	t_vec3	oc;
 
-	radius = sp.diameter / 2.0;
-	oc = vec_sub(ray.origin, sp.center);
-	a = vec_dot(ray.dir, ray.dir);
-	b = 2.0 * vec_dot(oc, ray.dir);
-	c = vec_dot(oc, oc) - radius * radius;
-	disc = b * b - 4 * a * c;
-	if (disc < 0)
+	denom = vec_dot(pl.normal, ray.dir);
+	if (fabs(denom) < EPSILON)
 		return (-1.0);
-	return ((-b - sqrt(disc)) / (2.0 * a));
+	oc = vec_sub(pl.point, ray.origin);
+	t = vec_dot(oc, pl.normal) / denom;
+	return (t);
 }

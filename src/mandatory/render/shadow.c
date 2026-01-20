@@ -1,33 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sphere.c                                           :+:      :+:    :+:   */
+/*   shadow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 01:10:24 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/16 17:11:32 by qizhang          ###   ########.fr       */
+/*   Created: 2026/01/16 17:17:15 by qizhang           #+#    #+#             */
+/*   Updated: 2026/01/20 14:39:40 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minirt.h"
 
-double	hit_sphere(t_ray ray, t_sphere sp)
+int	in_shadow(t_data *data, t_vec3 hit_p, t_vec3 normal)
 {
-	t_vec3		oc;
-	double		a;
-	double		b;
-	double		c;
-	double		disc;
-	double		radius;
 
-	radius = sp.diameter / 2.0;
-	oc = vec_sub(ray.origin, sp.center);
-	a = vec_dot(ray.dir, ray.dir);
-	b = 2.0 * vec_dot(oc, ray.dir);
-	c = vec_dot(oc, oc) - radius * radius;
-	disc = b * b - 4 * a * c;
-	if (disc < 0)
-		return (-1.0);
-	return ((-b - sqrt(disc)) / (2.0 * a));
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/15 19:05:47 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/16 17:18:55 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,20 @@ typedef struct	s_light
 	// t_vec3		color; not needed in mandatory
 }				t_light;
 
+typedef struct	s_sphere
+{
+	t_vec3		center;
+	t_color		color;
+	double		diameter;
+}				t_sphere;
+
+typedef struct	s_plane
+{
+	t_vec3		point;
+	t_vec3		normal;
+	t_color		color;
+}				t_plane;
+
 typedef	enum	e_type
 {
 	SPHERE,
@@ -38,13 +52,6 @@ typedef	struct s_object
 	void	*data;
 	struct s_object *next;
 }	t_object;
-
-typedef struct	s_sphere
-{
-	t_vec3		center;
-	t_color		color;
-	double		diameter;
-}				t_sphere;
 
 typedef struct s_ray
 {
@@ -80,7 +87,9 @@ typedef struct s_data
 	t_img		img;
 	t_camera	cam;
 	t_ray		ray;
-	t_object	object;
+	// t_object	object; refactoring after cylinder
 	t_light		light;
 	t_ambient	ambient;
+	t_sphere	sp;
+	t_plane		pl;
 }				t_data;
