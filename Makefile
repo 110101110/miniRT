@@ -6,7 +6,7 @@
 #    By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/14 12:53:54 by qizhang          ###   ########.fr        #
+#    Updated: 2026/01/20 16:37:39 by qizhang          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRC_MAND_FILES = \
 	mandatory/render/raycast.c \
 	mandatory/render/render_utils.c \
 	mandatory/parsing/parser.c \
+	mandatory/parsing/get_next_line.c \
 	mandatory/objects/sphere.c
 
 # 3. BONUS FILES
