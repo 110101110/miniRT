@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/20 13:30:33 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/20 14:38:56 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ typedef struct s_ambient
 	t_color	color;
 }	t_ambient;
 
-typedef struct s_camera
+typedef struct s_cam
 {
 	t_vec3	pos;
 	t_vec3	orient;
 	int		fov;
-}	t_camera;
+}	t_cam;
 
 typedef struct s_light
 {
@@ -78,7 +78,7 @@ typedef struct s_shape
 typedef struct s_data_parsing
 {
 	t_ambient		*ambient;
-	t_camera		*camera;
+	t_cam			*camera;
 	t_light			*light;
 	t_shape			*shapes;
 }	t_data_parsing;
