@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:17:15 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/20 14:39:40 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/20 16:11:22 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,4 @@
 int	in_shadow(t_data *data, t_vec3 hit_p, t_vec3 normal)
 {
 
-	return (0);
 }
