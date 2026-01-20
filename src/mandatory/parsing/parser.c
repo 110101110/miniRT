@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/17 13:31:35 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/20 13:15:40 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,6 @@ int	check_file_exists(char *filename)
 		return (1);
 	}
 	return (0);
-}
-
-int is_whitespace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f');
 }
 
 int	parse_arguments(int ac, char **av)
@@ -93,100 +88,6 @@ char	**copy_file_to_array(char *filename)
 	return (file);
 }
 
-void	skip_whitespaces(char **str)
-{
-	while (**str == ' ' || **str == '\t')
-		(*str)++;
-}
-
-int	is_valid_id(char *line)
-{
-	if ((line[0] == 'A' || line[0] == 'C' || line[0] == 'L') 
-		&& (line[1] == ' ' || line[1] == '\t' || line[1] == '\0'))
-		return (1);
-	if ((ft_strncmp(line, "sp", 2) == 0 || 
-		 ft_strncmp(line, "pl", 2) == 0 || 
-		 ft_strncmp(line, "cy", 2) == 0)
-		&& (line[2] == ' ' || line[2] == '\t' || line[2] == '\0'))
-		return (1);
-	return (0);
-}
-
-// Returns 0 if it finds identifiers that are not : A, C, L, sp, pl, cy regardless of count
-// accepts \n
-int	check_invalid_identifiers(char **file)
-{
-	int	i;
-
-	i = 0;
-	char *line;
-
-	while (file[i])
-	{
-		line = file[i];
-		skip_whitespaces(&line);
-		if (*line != '\0' && *line != '\n')
-		{
-			if (!is_valid_id(line))
-			{
-				printf("Error\nInvalid identifier found: %s\n", line);
-				return (0);
-			}
-		}
-		i++;
-	}
-	return (1);
-}
-
-// there MUST be exactly one A and C, at least one L
-int	check_identifier_counts(char **file)
-{
-	int i = 0;
-	int count_A = 0;
-	int count_C = 0;
-	int count_L = 0;
-	char *line;
-
-	while (file[i])
-	{
-		line = file[i];
-		skip_whitespaces(&line);
-		if (*line == 'A' && (line[1] == ' ' || line[1] == '\t' || line[1] == '\0'))
-			count_A++;
-		else if (*line == 'C' && (line[1] == ' ' || line[1] == '\t' || line[1] == '\0'))
-			count_C++;
-		else if (*line == 'L' && (line[1] == ' ' || line[1] == '\t' || line[1] == '\0'))
-			count_L++;
-		i++;
-	}
-	if (count_A != 1)
-		return (0);
-	if (count_C != 1)
-		return (0);
-	if (count_L != 1)
-		return (0);
-	return (1);
-}
-
-int	count_letter(char *line, char letter, int expected_count)
-{
-	int	count;
-	int	i;
-
-	count = 0;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == letter)
-			count++;
-		i++;
-	}
-	if (count != expected_count)
-		return (0);
-	return (1);
-}
-
-
 int	parse_file(char *filename)
 {
 	char    **file;
@@ -194,12 +95,6 @@ int	parse_file(char *filename)
 	file = copy_file_to_array(filename);
 	if (!file)
 		return (0);
-	if (!check_invalid_identifiers(file))
-		return (0);
-	if (!check_identifier_counts(file))
-		return (0);
-	// if (check_each_acl_identifiers(file) == 0)
-	// 	return (0);
 	return (1);
 }
 
