@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/20 13:15:40 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/20 13:17:43 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	**copy_file_to_array(char *filename)
 
 int	parse_file(char *filename)
 {
-	char    **file;
+	char	**file;
 
 	file = copy_file_to_array(filename);
 	if (!file)
@@ -100,7 +100,7 @@ int	parse_file(char *filename)
 
 int	parse(int ac, char **av)
 {
-	if(!parse_arguments(ac, av))
+	if (!parse_arguments(ac, av))
 		return (0);
 	if (!parse_file(av[1]))
 		return (0);
