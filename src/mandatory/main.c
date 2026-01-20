@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:06 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/20 00:18:45 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/20 16:18:01 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	main(void)
 	double	aspect_ratio;
 
 	init_mlx(&data);
-	data.cam.origin = vec_init(0, 2, 0);
-	data.cam.dir = vec_normalize(vec_init(0, -0.5, -1));
+	data.cam.origin = vec_init(0, 0, 0);
+	data.cam.dir = vec_normalize(vec_init(0, 0, -1));
 	data.cam.fov = 60;
 	aspect_ratio = (double)WIDTH / (double)HEIGHT;
 	data.light.origin = vec_init(0,10,-10);

@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:17:41 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/14 19:37:06 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/20 16:18:56 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 
 # define EPSILON 1e-6
 
-typedef struct s_vec3
+typedef struct	s_vec3
 {
 	double	x;
 	double	y;
 	double	z;
-} t_vec3;
+}			t_vec3;
 
 typedef t_vec3 t_color;
 
