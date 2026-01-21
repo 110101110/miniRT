@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parser_debug.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/21 18:04:48 by kevisout         ###   ########.fr       */
+/*   Created: 2026/01/21 17:52:20 by kevisout          #+#    #+#             */
+/*   Updated: 2026/01/21 17:52:36 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-#define PARSER_H
+#include "../../../includes/minirt.h"
 
-# include "minirt.h"
-# include "../libft/libft.h"
-# include <fcntl.h>
-# include <unistd.h>
-# define BUFFER_SIZE 32
+void	print_tab(char **tab)
+{
+	int	i;
 
-// MAIN DATA STRUCT
-
-// typedef struct s_data_parsing
-// {
-// }	t_data_parsing;
-
-int		parse(int ac, char **av, t_data *data);
-char	*get_next_line(int fd);
-int		parse_arguments(int ac, char **av);
-void	print_tab(char **tab);
-
-#endif
+	i = 0;
+	while (tab[i])
+	{
+		printf("%s", tab[i]);
+		i++;
+	}
+}
