@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 16:14:03 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/14 13:16:06 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/15 00:50:19 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,4 @@ void	init_camera(t_camera *cam, double aspect_ratio)
 	cam->right = vec_normalize(cam->right);
 	cam->up = vec_cross(cam->right, cam->dir);
 	cam->up = vec_normalize(cam->up);
-	printf("Right: %f, %f, %f\n", cam->right.x, cam->right.y, cam->right.z);
-	printf("Up: %f, %f, %f\n", cam->up.x, cam->up.y, cam->up.z);
 }

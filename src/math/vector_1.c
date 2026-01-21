@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:37:13 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/13 00:05:55 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/15 19:00:38 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_vec3	vec_add(t_vec3 v1, t_vec3 v2)
 	return (res);
 }
 
-/*Vector Subtraction: to get the vector FROM camera TO object(Obj - Cam) */
 t_vec3 vec_sub(t_vec3 v1, t_vec3 v2)
 {
 	t_vec3	res;
