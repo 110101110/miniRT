@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 17:52:20 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/21 17:52:36 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:41:54 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_tab(char **tab)
 	i = 0;
 	while (tab[i])
 	{
-		printf("%s", tab[i]);
+		printf("%s\n", tab[i]);
 		i++;
 	}
 }

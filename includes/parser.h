@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/21 18:04:48 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/21 22:20:51 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,24 @@
 # include <unistd.h>
 # define BUFFER_SIZE 32
 
-// MAIN DATA STRUCT
+typedef struct s_obj
+{
+	t_type		type;
+	char		**content;
+	int			line;
+	struct s_obj *next;
+}	t_obj;
 
-// typedef struct s_data_parsing
-// {
-// }	t_data_parsing;
+typedef struct s_parser
+{
+	char		**ambient;
+	char		**camera;
+	char		**light;
+	t_obj		*obj;
+	int			sp_count;
+	int			pl_count;
+	int			cy_count;
+}	t_parser;
 
 int		parse(int ac, char **av, t_data *data);
 char	*get_next_line(int fd);
