@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/22 12:24:12 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/22 13:29:57 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,44 @@ int	fill_light_content(char **file, t_parser *parser)
 	return (1);
 }
 
+// Fill the linked list parser->obj with all objects found in the file
+int	fill_obj(char **file, t_parser *parser)
+{
+	int		i;
+	int		j;
+	char	**split_content;
+	t_list	*node;
+	char	first_char;
+
+	i = 0;
+	parser->obj = NULL;
+	while (file[i])
+	{
+		j = 0;
+		while (file[i][j] == ' ')
+			j++;
+		first_char = file[i][j];
+		if (first_char == 'A' || first_char == 'C' || first_char == 'L')
+		{
+			i++;
+			continue ;
+		}
+		if (first_char == 's' || first_char == 'p' || first_char == 'c')
+		{
+			split_content = ft_split(file[i], ' ');
+			if (!split_content)
+				return (0);
+			node = ft_lstnew(split_content);
+			if (!node)
+				return (0);
+			ft_lstadd_back(&parser->obj, node);
+		}
+		i++;
+	}
+	return (1);
+}
+
+// Fill the parser struct with all its content
 int	fill_parser_struct(char **file, t_parser *parser)
 {
 	if (!fill_ambient_content(file, parser))
@@ -221,8 +259,8 @@ int	fill_parser_struct(char **file, t_parser *parser)
 		return (0);
 	if (!fill_light_content(file, parser))
 		return (0);
-	// if (!fill_obj(file, parser))
-	// 	return (0);
+	if (!fill_obj(file, parser))
+		return (0);
 	return (1);
 }
 
@@ -267,25 +305,23 @@ int	detect_illegal_object(char **file)
 
 int	parse_file(char **file, t_parser *parser)
 {
-	if (!count_mandatory_identifiers(file)) // check bon nombre de A C L
+	if (!count_mandatory_identifiers(file))
 		return (0);
-	if (!detect_illegal_characters(file)) // detecte les caracteres illegaux
+	if (!detect_illegal_characters(file))
 		return (0);
-	if (!one_identifier_per_line(file)) // detecte si ya plus d'1 identifiant sur une meme ligne
+	if (!one_identifier_per_line(file))
 		return (0);
-	if (!detect_illegal_object(file)) // detecte les objets illegaux
+	if (!detect_illegal_object(file))
 		return (0);
 	if (!fill_parser_struct(file, parser))
 		return (0);
-	(void)file;
-	(void)parser;
 	return (1);
 }
 
 int	parse(int ac, char **av, t_data *data)
 {
-	char		**file; // free later
-	t_parser	parser; // free later
+	char		**file;
+	t_parser	parser;
 
 	if (!parse_arguments(ac, av))
 		return (0);
