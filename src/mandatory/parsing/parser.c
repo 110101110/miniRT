@@ -6,11 +6,50 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/22 20:07:25 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/22 22:01:03 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minirt.h"
+
+int	ft_isspace(int c)
+{
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
+}
+
+float	ft_atof(const char *str)
+{
+	float	result;
+	float	sign;
+	float	decimal_place;
+
+	result = 0.0f;
+	sign = 1.0f;
+	decimal_place = 0.1f;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1.0f;
+		str++;
+	}
+	while (ft_isdigit(*str))
+	{
+		result = result * 10.0f + (*str - '0');
+		str++;
+	}
+	if (*str == '.')
+		str++;
+	while (ft_isdigit(*str))
+	{
+		result += (*str - '0') * decimal_place;
+		decimal_place *= 0.1f;
+		str++;
+	}
+	return (result * sign);
+}
 
 char	**copy_file_to_array(char *filename)
 {
@@ -619,19 +658,126 @@ int	parse_struct_content(t_parser *parser)
 	return (1);
 }
 
+// Check if 'value' (as a double) is within the range [min, max]
+int	check_range_double(double value, double min, double max)
+{
+	if (value < min || value > max)
+		return (0);
+	return (1);
+}
+
+// Check if 'value' (as an int) is within the range [min, max]
+int	check_range_int(int value, int min, int max)
+{
+	if (value < min || value > max)
+		return (0);
+	return (1);
+}
+
+// Check if the float value overflows
+int	check_float_overflows(char *str)
+{
+	double	val;
+
+	val = ft_atof(str);
+	if (val > __FLT_MAX__ || val < -__FLT_MAX__)
+		return (0);
+	return (1);
+}
+
+// Check if the int value overflows
+int	check_int_overflows(char *str)
+{
+	long	val;
+	int		i;
+	int		sign;
+
+	val = 0;
+	i = 0;
+	sign = 1;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
+		i++;
+	}
+	while (ft_isdigit(str[i]))
+	{
+		val = val * 10 + (str[i] - '0');
+		i++;
+	}
+	val *= sign;
+	if (val > INT_MAX || val < INT_MIN)
+		return (0);
+	return (1);
+}
+
+// Check ambient lighting ratio [0.0 - 1.0]
+int	check_ambient_light_values(t_parser *parser)
+{
+	if (!check_float_overflows(parser->ambient[1])
+		|| !check_range_double(ft_atof(parser->ambient[1]), 0.0, 1.0))
+		return (ft_putstr_fd("Error\n\
+A: ambient lighting ratio out of range\n", 2), 0);
+	return (1);
+}
+
+// Check camera vector [-1.0 - 1.0]
+// Check FOV [0 - 180]
+int	check_camera_values(t_parser *parser)
+{
+	if (!check_float_overflows(parser->camera[2])
+		|| !check_range_double(ft_atof(parser->camera[2]), -1.0, 1.0))
+		return (ft_putstr_fd("Error\n\
+C: camera orientation vector out of range\n", 2), 0);
+	if (!check_float_overflows(parser->camera[3])
+		|| !check_range_double(ft_atof(parser->camera[3]), 0.0, 180.0))
+		return (ft_putstr_fd("Error\nC: FOV out of range\n", 2), 0);
+	return (1);
+}
+
+// Check light brightness ratio [0.0 - 1.0]
+int	check_light_values(t_parser *parser)
+{
+	if (!check_float_overflows(parser->light[2])
+		|| !check_range_double(ft_atof(parser->light[2]), 0.0, 1.0))
+		return (ft_putstr_fd("Error\n\
+L: light brightness ratio out of range\n", 2), 0);
+	return (1);
+}
+
+// Check if the values are within their specified ranges
+int	check_values_ranges(t_parser *parser)
+{
+	if (!check_ambient_light_values(parser))
+		return (0);
+	if (!check_camera_values(parser))
+		return (0);
+	if (!check_light_values(parser))
+		return (0);
+	return (1);
+}
+
 int	parse_file(char **file, t_parser *parser)
 {
 	if (!count_mandatory_identifiers(file))
-		return (0);
+		return (ft_putstr_fd("Error\n\
+Mandatory identifier missing or duplicated\n", 2), 0);
 	if (!detect_illegal_characters(file))
-		return (0);
+		return (ft_putstr_fd("Error\n\
+Illegal character detected\n", 2), 0);
 	if (!one_identifier_per_line(file))
-		return (0);
+		return (ft_putstr_fd("Error\n\
+Multiple identifiers in one line\n", 2), 0);
 	if (!detect_illegal_object(file))
-		return (0);
+		return (ft_putstr_fd("Error\n\
+Illegal object identifier detected\n", 2), 0);
 	if (!fill_parser_struct(file, parser))
-		return (0);
+		return (ft_putstr_fd("Error\n\
+Failed to fill parser struct\n", 2), 0);
 	if (!parse_struct_content(parser))
+		return (0);
+	if (!check_values_ranges(parser))
 		return (0);
 	return (1);
 }

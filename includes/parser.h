@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/22 19:37:52 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/22 21:23:28 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,7 @@
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <unistd.h>
-
-// typedef struct s_obj
-// {
-// 	t_type		type;
-// 	char		**content;
-// 	struct s_obj *next;
-// }	t_obj;
+#include <limits.h>
 
 typedef struct s_parser
 {
