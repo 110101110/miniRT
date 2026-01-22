@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 15:40:41 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/19 15:48:51 by qizhang          ###   ########.fr       */
+/*   Created: 2024/08/17 15:11:00 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/17 23:43:12 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
+/*
+ft_lstsize retourne la taille de la list 'lst'
+Par taille on entent nombre de maillons dans la liste
+
+On doit manipuler la liste avec une copie (tmp) pour ne pas perdre
+le pointeur sur le debut de la liste (lst)
+*/
 int	ft_lstsize(t_list *lst)
 {
-	t_list	*current;
 	int		i;
+	t_list	*tmp;
 
+	if (!lst)
+		return (0);
 	i = 0;
-	current = lst;
-	while (current != 0)
+	tmp = lst;
+	while (tmp)
 	{
-		current = current -> next;
-		i ++;
+		tmp = tmp->next;
+		i++;
 	}
 	return (i);
 }

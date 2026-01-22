@@ -3,35 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 15:35:42 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/15 16:25:13 by qizhang          ###   ########.fr       */
+/*   Created: 2024/08/07 10:38:51 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/07 11:02:38 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
-#include <stdlib.h>
 
-char	*ft_substr(char const *s, unsigned int start, unsigned int len)
+/*
+ft_substr alloue avec malloc et retourne une chaine de caractere issue de 's'
+Cette chaine de caractere commence a l'index 'start' et aura pour taille 'len'
+Ne retourne NULL que si l'allocation echoue
+
+Si start est un nombre plus grand que la longueur de 's', alors on retourne une
+chaine vide.
+Si la valeur de 'len' est plus grande que la taille de 's', alors on ajuste len
+en lui mettant la longeur de 's' moins 'start', ce qui fait que len est egal
+au nombre de caracteres restants a partir de start, jusqu'a la fin de la chaine.
+*/
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char			*str;
 	unsigned int	i;
+	char			*str;
 
-	if (!s)
-		return (0);
-	if (start > ft_strlen(s))
-		return (ft_strdup(""));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	str = malloc(len + 1);
-	if (!str)
-		return (0);
 	i = 0;
-	while (i < len)
-	{
-		str[i] = s[start + i];
+	while (s[i])
 		i++;
-	}
-	str[i] = 0;
+	if (start >= i)
+		return (ft_strdup(""));
+	if (len > i - start)
+		len = i - start;
+	i = 0;
+	while (i < len && s[i])
+		i++;
+	str = malloc((i + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < len && s[start])
+		str[i++] = s[start++];
+	str[i] = '\0';
 	return (str);
 }

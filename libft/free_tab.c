@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
+/*   free_tab.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: abreuil <abreuil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 16:48:52 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/19 17:20:06 by qizhang          ###   ########.fr       */
+/*   Created: 2025/02/03 15:17:34 by kevso             #+#    #+#             */
+/*   Updated: 2025/05/30 15:07:28 by abreuil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+void	free_tab(char **str)
 {
-	if (lst == 0 || f == 0)
+	int	i;
+
+	if (!str)
 		return ;
-	while (lst)
+	i = 0;
+	while (str[i])
 	{
-		f(lst -> content);
-		lst = lst -> next;
+		free(str[i]);
+		i++;
 	}
+	free(str);
 }

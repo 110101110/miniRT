@@ -3,47 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 22:10:01 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/22 00:33:22 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/21 11:44:52 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/12 21:28:02 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_isspace(int c);
+/*
+ft_atoi prend en parametre une chaine de caracteres, et la convertit en int.
+La string doit etre sous cette forme :
+- Commence par des whitespaces
+- Suivi d'un seul symbole + ou - (ou aucun)
+- Suivi de chiffres.
+Le parsing s'arrete d'est qu'une de ses regles n'est pas respectee.
+*/
 
 int	ft_atoi(const char *str)
 {
+	int	pos;
 	int	nbr;
-	int	sign;
 	int	i;
 
+	pos = 1;
 	nbr = 0;
-	sign = 1;
 	i = 0;
-	while (ft_isspace(str[i]))
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
 		i++;
-	if (str[i] == '+' && str[i + 1] != '-')
-		i++;
-	if (str[i] == '-')
+	if (str[i] == '+' || str[i] == '-')
 	{
-		sign = -1;
+		if (str[i] == '-')
+			pos = -1;
 		i++;
 	}
-	while (str[i] && str[i] >= 48 && str[i] <= 57)
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		nbr *= 10;
-		nbr += str[i] - 48;
+		nbr = nbr * 10 + (str[i] - '0');
 		i++;
 	}
-	nbr *= sign;
-	return (nbr);
+	return (nbr * pos);
 }
 
-int	ft_isspace(int c)
+/*
+int	main(int ac, char **av)
 {
-	if ((c > 8 && c < 14) || c == 32)
-		return (1);
-	return (0);
+	if (ac != 2)
+	  return (0);
+	printf("atoi    = '%d'\n", atoi(av[1]));
+	printf("ft_atoi = '%d'\n", ft_atoi(av[1]));
+	return (1);
 }
+*/

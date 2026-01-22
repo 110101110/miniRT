@@ -3,28 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 21:07:10 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/22 03:14:00 by qizhang          ###   ########.fr       */
+/*   Created: 2024/08/04 16:46:18 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/12 16:23:24 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
+/*
+ft_strchr retourne un pointeur sur la premiere occurence de 'c' dans 's'
+retourne NULL si 'c' n'est pas trouvee dans 's'.
+Cas specifique : si c = '\0', un pointeur vers le caractere NULL de 's'
+sera retournee (la fin donc)
+*/
 char	*ft_strchr(const char *s, int c)
 {
-	unsigned int	i;
-	char			cc;
-
-	i = 0;
-	cc = (char)c;
-	while (s[i])
+	while (*s)
 	{
-		if (s[i] == cc)
-			return ((char *)&s[i]);
-		i++;
+		if ((unsigned char)*s == (unsigned char)c)
+			return ((char *)s);
+		s++;
 	}
-	if (s[i] == cc)
-		return ((char *)&s[i]);
-	return (0);
+	if ((unsigned char)c == '\0')
+		return ((char *)s);
+	return (NULL);
 }

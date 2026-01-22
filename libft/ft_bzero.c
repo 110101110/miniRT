@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 22:55:46 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/14 21:00:13 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/21 14:27:07 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/05 12:27:05 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	ft_bzero(void *s, unsigned int n)
-{
-	char	*tmp;
+/*
+ft_bzero efface 'n' octets dans la zone memoire pointee par s.
+Il 'efface' en ecrivant des '\0'
+*/
 
-	tmp = (char *)s;
-	while (n > 0)
-	{
-		*tmp = 0;
-		tmp ++;
-		n --;
-	}
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+		((char *)s)[i++] = '\0';
 }

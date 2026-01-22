@@ -6,11 +6,11 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 12:44:05 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/15 14:29:37 by kevisout         ###   ########.fr       */
+/*   Updated: 2024/12/27 12:03:15 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "libft.h"
 
 static char	*append_char(char *str, char c, int len)
 {

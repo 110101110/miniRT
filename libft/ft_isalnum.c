@@ -3,21 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 20:31:04 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/14 21:00:47 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/21 18:21:43 by kevisout          #+#    #+#             */
+/*   Updated: 2024/07/21 18:39:49 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
+
+/*
+ft_isalnum retourne 1 si c est une lettre ou un chiffre.
+Sinon retourne 0.
+*/
 
 int	ft_isalnum(int c)
 {
-	if ((c > 47 && c < 58) || (c > 64 && c < 91)
-		|| (c > 96 && c < 123))
-	{
-		return (c);
-	}
-	else
-		return (0);
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	if (c >= 'A' && c <= 'Z')
+		return (1);
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }

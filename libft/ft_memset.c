@@ -3,24 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 21:09:17 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/14 17:19:51 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/24 23:35:03 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/05 12:28:02 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	*ft_memset(void *b, int c, unsigned int len)
-{
-	unsigned char	*temp;
+/*
+ft_memset remplie les 'n' premiers octets dans la zone memoire pointee par 's'
+avec le caractere 'c'. Utilisable dans ft_bzero ou ft_calloc par exemple.
+*/
 
-	temp = (unsigned char *) b;
-	while (len > 0)
-	{
-		*temp = (unsigned char) c;
-		len --;
-		temp ++;
-	}
-	return (b);
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t	i;
+	char	*str;
+
+	i = 0;
+	str = (char *)s;
+	while (i < n)
+		str[i++] = (char)c;
+	return (s);
 }
