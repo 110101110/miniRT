@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/22 14:18:06 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:34:05 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,12 +332,12 @@ int	is_double(char *str)
 	dot_count = 0;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	while (str[i])
+	while (str[i] && str[i] != '\n')
 	{
 		if (str[i] == '.')
 		{
 			dot_count++;
-			if (i == 0 || str[i + 1] == '\0')
+			if (i == 0 || str[i + 1] == '\0' || str[i + 1] == '\n')
 				return (0);
 		}
 		else if (str[i] < '0' || str[i] > '9')
@@ -394,6 +394,8 @@ int	is_rgb(char *str)
 		}
 		count++;
 	}
+	if (*str != '\0' && *str != '\n')
+		return (0);
 	return (1);
 }
 
@@ -414,15 +416,98 @@ int	parse_ambient_content(char **ambient)
 	return (1);
 }
 
+static int	parse_segment_vec3(char **str)
+{
+	if (!str || !*str)
+		return (-1);
+	while (ft_isdigit(**str) || **str == '-' || **str == '+')
+		(*str)++;
+	if (**str == '.')
+	{
+		(*str)++;
+		while (ft_isdigit(**str))
+			(*str)++;
+	}
+	return (0);
+}
+
+// Validates the VEC3 string: double,double,double
+// - Signs allowed (+ or -)
+// - Decimal points allowed
+// - Exactly 2 commas
+int	is_vec3(char *str)
+{
+	int	count;
+
+	count = 0;
+	if (!str)
+		return (0);
+	while (count < 3)
+	{
+		if (parse_segment_vec3(&str) == -1)
+			return (0);
+		if (count < 2)
+		{
+			if (*str != ',')
+				return (0);
+			str++;
+		}
+		count++;
+	}
+	if (*str != '\0' && *str != '\n')
+		return (0);
+	return (1);
+}
+
+// Must have 4 elements :
+// 1. Identifier 'C'
+// 2. Viewpoint coordinates x,y,z (doubles)
+// 3. Orientation vector x,y,z (doubles) [-1.0 - 1.0]
+// 4. FOV (integer) [0 - 180]
+int	parse_camera_content(char **camera)
+{
+	if (nb_of_elements(camera) != 4)
+		return (0);
+	if (!is_identifier(camera[0], 'C'))
+		return (0);
+	if (!is_vec3(camera[1]))
+		return (0);
+	if (!is_vec3(camera[2]))
+		return (0);
+	if (!is_double(camera[3]))
+		return (0);
+	return (1);
+}
+
+// Must have 3 or 4 elements :
+// 1. Identifier 'L'
+// 2. Light position x,y,z (doubles)
+// 3. Brightness ratio [0.0 - 1.0] (double)
+// 4. RGB color [0-255],[0-255],[0-255] (integers)
+int	parse_light_content(char **light)
+{
+	if (nb_of_elements(light) != 3 && nb_of_elements(light) != 4)
+		return (0);
+	if (!is_identifier(light[0], 'L'))
+		return (0);
+	if (!is_vec3(light[1]))
+		return (0);
+	if (!is_double(light[2]))
+		return (0);
+	if (nb_of_elements(light) == 4 && !is_rgb(light[3]))
+		return (0);
+	return (1);
+}
+
 // Parse each content of the parser struct
 int	parse_struct_content(t_parser *parser)
 {
 	if (!parse_ambient_content(parser->ambient))
 		return (0);
-	// if (!parse_camera_content(parser->camera))
-	// 	return (0);
-	// if (!parse_light_content(parser->light))
-	// 	return (0);
+	if (!parse_camera_content(parser->camera))
+		return (0);
+	if (!parse_light_content(parser->light))
+		return (0);
 	// if (!parse_object_content(parser))
 	// 	return (0);
 	return (1);
