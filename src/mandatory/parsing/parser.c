@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/22 13:29:57 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/22 14:18:06 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,131 @@ int	detect_illegal_object(char **file)
 	return (1);
 }
 
+// Count the number of elements in a string array
+int	nb_of_elements(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
+
+// Check if the string matches the identifier
+int	is_identifier(char *str, char identifier)
+{
+	if (str[0] == identifier && str[1] == '\0')
+		return (1);
+	return (0);
+}
+
+// Check if the string is a valid double (-12.3, +0.56, 42, etc.)
+int	is_double(char *str)
+{
+	int	i;
+	int	dot_count;
+
+	i = 0;
+	dot_count = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (str[i] == '.')
+		{
+			dot_count++;
+			if (i == 0 || str[i + 1] == '\0')
+				return (0);
+		}
+		else if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	if (dot_count > 1)
+		return (0);
+	return (1);
+}
+
+// Parses a segment and ensures it is 0-255 without signs.
+// Increments the string pointer forward.
+static int	parse_segment_rgb(char **str)
+{
+	long	val;
+	int		len;
+
+	val = 0;
+	len = 0;
+	if (!ft_isdigit(**str))
+		return (-1);
+	while (ft_isdigit(**str))
+	{
+		val = val * 10 + (**str - '0');
+		(*str)++;
+		len++;
+	}
+	if (len > 3 || val > 255)
+		return (-1);
+	return (0);
+}
+
+// Validates the RGB string: int,int,int
+// - No signs allowed (+ or -)
+// - Range 0-255
+// - Exactly 2 commas
+int	is_rgb(char *str)
+{
+	int	count;
+
+	count = 0;
+	if (!str)
+		return (0);
+	while (count < 3)
+	{
+		if (parse_segment_rgb(&str) == -1)
+			return (0);
+		if (count < 2)
+		{
+			if (*str != ',')
+				return (0);
+			str++;
+		}
+		count++;
+	}
+	return (1);
+}
+
+// Must have 3 elements :
+// 1. Identifier 'A'
+// 2. Ambient lighting ratio [0.0 - 1.0] (double)
+// 3. RGB color [0-255],[0-255],[0-255] (integers)
+int	parse_ambient_content(char **ambient)
+{
+	if (nb_of_elements(ambient) != 3)
+		return (0);
+	if (!is_identifier(ambient[0], 'A'))
+		return (0);
+	if (!is_double(ambient[1]))
+		return (0);
+	if (!is_rgb(ambient[2]))
+		return (0);
+	return (1);
+}
+
+// Parse each content of the parser struct
+int	parse_struct_content(t_parser *parser)
+{
+	if (!parse_ambient_content(parser->ambient))
+		return (0);
+	// if (!parse_camera_content(parser->camera))
+	// 	return (0);
+	// if (!parse_light_content(parser->light))
+	// 	return (0);
+	// if (!parse_object_content(parser))
+	// 	return (0);
+	return (1);
+}
+
 int	parse_file(char **file, t_parser *parser)
 {
 	if (!count_mandatory_identifiers(file))
@@ -314,6 +439,8 @@ int	parse_file(char **file, t_parser *parser)
 	if (!detect_illegal_object(file))
 		return (0);
 	if (!fill_parser_struct(file, parser))
+		return (0);
+	if (!parse_struct_content(parser))
 		return (0);
 	return (1);
 }
