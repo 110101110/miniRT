@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/22 18:34:05 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/22 20:07:25 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,11 +315,20 @@ int	nb_of_elements(char **tab)
 }
 
 // Check if the string matches the identifier
-int	is_identifier(char *str, char identifier)
+int	is_identifier(char *str, char *identifier)
 {
-	if (str[0] == identifier && str[1] == '\0')
-		return (1);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (identifier[i])
+	{
+		if (str[i] != identifier[i])
+			return (0);
+		i++;
+	}
+	if (str[i] != '\0')
+		return (0);
+	return (1);
 }
 
 // Check if the string is a valid double (-12.3, +0.56, 42, etc.)
@@ -399,23 +408,6 @@ int	is_rgb(char *str)
 	return (1);
 }
 
-// Must have 3 elements :
-// 1. Identifier 'A'
-// 2. Ambient lighting ratio [0.0 - 1.0] (double)
-// 3. RGB color [0-255],[0-255],[0-255] (integers)
-int	parse_ambient_content(char **ambient)
-{
-	if (nb_of_elements(ambient) != 3)
-		return (0);
-	if (!is_identifier(ambient[0], 'A'))
-		return (0);
-	if (!is_double(ambient[1]))
-		return (0);
-	if (!is_rgb(ambient[2]))
-		return (0);
-	return (1);
-}
-
 static int	parse_segment_vec3(char **str)
 {
 	if (!str || !*str)
@@ -459,6 +451,23 @@ int	is_vec3(char *str)
 	return (1);
 }
 
+// Must have 3 elements :
+// 1. Identifier 'A'
+// 2. Ambient lighting ratio [0.0 - 1.0] (double)
+// 3. RGB color [0-255],[0-255],[0-255] (integers)
+int	parse_ambient_content(char **ambient)
+{
+	if (nb_of_elements(ambient) != 3)
+		return (ft_putstr_fd("Error\nA: invalid number of elements\n", 2), 0);
+	if (!is_identifier(ambient[0], "A"))
+		return (ft_putstr_fd("Error\nA: invalid identifier\n", 2), 0);
+	if (!is_double(ambient[1]))
+		return (ft_putstr_fd("Error\nA: invalid lightning ratio\n", 2), 0);
+	if (!is_rgb(ambient[2]))
+		return (ft_putstr_fd("Error\nA: invalid RGB\n", 2), 0);
+	return (1);
+}
+
 // Must have 4 elements :
 // 1. Identifier 'C'
 // 2. Viewpoint coordinates x,y,z (doubles)
@@ -467,15 +476,15 @@ int	is_vec3(char *str)
 int	parse_camera_content(char **camera)
 {
 	if (nb_of_elements(camera) != 4)
-		return (0);
-	if (!is_identifier(camera[0], 'C'))
-		return (0);
+		return (ft_putstr_fd("Error\nC: invalid number of elements\n", 2), 0);
+	if (!is_identifier(camera[0], "C"))
+		return (ft_putstr_fd("Error\nC: invalid identifier\n", 2), 0);
 	if (!is_vec3(camera[1]))
-		return (0);
+		return (ft_putstr_fd("Error\nC: invalid coordinates\n", 2), 0);
 	if (!is_vec3(camera[2]))
-		return (0);
+		return (ft_putstr_fd("Error\nC: invalid orientation vector\n", 2), 0);
 	if (!is_double(camera[3]))
-		return (0);
+		return (ft_putstr_fd("Error\nC: invalid FOV\n", 2), 0);
 	return (1);
 }
 
@@ -487,15 +496,112 @@ int	parse_camera_content(char **camera)
 int	parse_light_content(char **light)
 {
 	if (nb_of_elements(light) != 3 && nb_of_elements(light) != 4)
-		return (0);
-	if (!is_identifier(light[0], 'L'))
-		return (0);
+		return (ft_putstr_fd("Error\nL: invalid number of elements\n", 2), 0);
+	if (!is_identifier(light[0], "L"))
+		return (ft_putstr_fd("Error\nL: invalid identifier\n", 2), 0);
 	if (!is_vec3(light[1]))
-		return (0);
+		return (ft_putstr_fd("Error\nL: invalid light position\n", 2), 0);
 	if (!is_double(light[2]))
-		return (0);
+		return (ft_putstr_fd("Error\nL: invalid brightness ratio\n", 2), 0);
 	if (nb_of_elements(light) == 4 && !is_rgb(light[3]))
-		return (0);
+		return (ft_putstr_fd("Error\nL: invalid RGB\n", 2), 0);
+	return (1);
+}
+
+// Must have 4 elements :
+// 1. Identifier 'sp'
+// 2. Sphere center x,y,z (doubles)
+// 3. Sphere diameter (double)
+// 4. RGB color [0-255],[0-255],[0-255] (integers)
+int	parse_sphere_content(char **content)
+{
+	if (nb_of_elements(content) != 4)
+		return (ft_putstr_fd("Error\nsp: invalid number of elements\n", 2), 0);
+	if (!is_identifier(content[0], "sp"))
+		return (ft_putstr_fd("Error\nsp: invalid identifier\n", 2), 0);
+	if (!is_vec3(content[1]))
+		return (ft_putstr_fd("Error\nsp: invalid center\n", 2), 0);
+	if (!is_double(content[2]))
+		return (ft_putstr_fd("Error\nsp: invalid diameter\n", 2), 0);
+	if (!is_rgb(content[3]))
+		return (ft_putstr_fd("Error\nsp: invalid RGB\n", 2), 0);
+	return (1);
+}
+
+// Must have 4 elements :
+// 1. Identifier 'pl'
+// 2. Plane point x,y,z (doubles)
+// 3. Plane normal vector x,y,z (doubles) [-1.0 - 1.0]
+// 4. RGB color [0-255],[0-255],[0-255] (integers)
+int	parse_plane_content(char **content)
+{
+	if (nb_of_elements(content) != 4)
+		return (ft_putstr_fd("Error\npl: invalid number of elements\n", 2), 0);
+	if (!is_identifier(content[0], "pl"))
+		return (ft_putstr_fd("Error\npl: invalid identifier\n", 2), 0);
+	if (!is_vec3(content[1]))
+		return (ft_putstr_fd("Error\npl: invalid point\n", 2), 0);
+	if (!is_vec3(content[2]))
+		return (ft_putstr_fd("Error\npl: invalid orientation vector\n", 2), 0);
+	if (!is_rgb(content[3]))
+		return (ft_putstr_fd("Error\npl: invalid RGB\n", 2), 0);
+	return (1);
+}
+
+// Must have 5 elements :
+// 1. Identifier 'cy'
+// 2. Cylinder base point x,y,z (doubles)
+// 3. Cylinder orientation vector x,y,z (doubles) [-1.0 - 1.0]
+// 4. Cylinder diameter (double)
+// 5. Cylinder height (double)
+// 6. RGB color [0-255],[0-255],[0-255] (integers)
+int	parse_cylinder_content(char **content)
+{
+	if (nb_of_elements(content) != 6)
+		return (ft_putstr_fd("Error\ncy: invalid number of elements\n", 2), 0);
+	if (!is_identifier(content[0], "cy"))
+		return (ft_putstr_fd("Error\ncy: invalid identifier\n", 2), 0);
+	if (!is_vec3(content[1]))
+		return (ft_putstr_fd("Error\ncy: invalid base point\n", 2), 0);
+	if (!is_vec3(content[2]))
+		return (ft_putstr_fd("Error\ncy: invalid orientation vector\n", 2), 0);
+	if (!is_double(content[3]))
+		return (ft_putstr_fd("Error\ncy: invalid diameter\n", 2), 0);
+	if (!is_double(content[4]))
+		return (ft_putstr_fd("Error\ncy: invalid height\n", 2), 0);
+	if (!is_rgb(content[5]))
+		return (ft_putstr_fd("Error\ncy: invalid RGB\n", 2), 0);
+	return (1);
+}
+
+int	parse_object_content(t_parser *parser)
+{
+	t_list	*current;
+
+	current = parser->obj;
+	while (current)
+	{
+		if (current->content == NULL)
+			return (0);
+		if (is_identifier(((char **)current->content)[0], "sp"))
+		{
+			if (!parse_sphere_content((char **)current->content))
+				return (0);
+		}
+		else if (is_identifier(((char **)current->content)[0], "pl"))
+		{
+			if (!parse_plane_content((char **)current->content))
+				return (0);
+		}
+		else if (is_identifier(((char **)current->content)[0], "cy"))
+		{
+			if (!parse_cylinder_content((char **)current->content))
+				return (0);
+		}
+		else
+			return (0);
+		current = current->next;
+	}
 	return (1);
 }
 
@@ -508,8 +614,8 @@ int	parse_struct_content(t_parser *parser)
 		return (0);
 	if (!parse_light_content(parser->light))
 		return (0);
-	// if (!parse_object_content(parser))
-	// 	return (0);
+	if (!parse_object_content(parser))
+		return (0);
 	return (1);
 }
 

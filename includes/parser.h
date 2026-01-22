@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/22 13:15:54 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:37:52 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ typedef struct s_parser
 	char		**camera;
 	char		**light;
 	t_list		*obj;
-	int			sp_count;
-	int			pl_count;
-	int			cy_count;
 }	t_parser;
 
 int		parse(int ac, char **av, t_data *data);
