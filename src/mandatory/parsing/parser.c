@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/22 22:01:03 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:13:24 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,14 @@ char	**copy_file_to_array(char *filename)
 	if (fd < 0)
 		return (NULL);
 	line_count = 0;
-	while (get_next_line(fd))
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		free(line);
 		line_count++;
+	}
 	close(fd);
 	file = (char **)malloc(sizeof(char *) * (line_count + 1));
 	if (!file)
@@ -761,25 +767,44 @@ int	check_values_ranges(t_parser *parser)
 int	parse_file(char **file, t_parser *parser)
 {
 	if (!count_mandatory_identifiers(file))
-		return (ft_putstr_fd("Error\n\
-Mandatory identifier missing or duplicated\n", 2), 0);
+		return (ft_putstr_fd("Error\nproblem with identifier count\n", 2), 0);
 	if (!detect_illegal_characters(file))
-		return (ft_putstr_fd("Error\n\
-Illegal character detected\n", 2), 0);
+		return (ft_putstr_fd("Error\nillegal character detected\n", 2), 0);
 	if (!one_identifier_per_line(file))
-		return (ft_putstr_fd("Error\n\
-Multiple identifiers in one line\n", 2), 0);
+		return (ft_putstr_fd("Error\nproblem with identifiers format\n", 2), 0);
 	if (!detect_illegal_object(file))
-		return (ft_putstr_fd("Error\n\
-Illegal object identifier detected\n", 2), 0);
+		return (ft_putstr_fd("Error\nillegal identifier detected\n", 2), 0);
 	if (!fill_parser_struct(file, parser))
-		return (ft_putstr_fd("Error\n\
-Failed to fill parser struct\n", 2), 0);
+		return (ft_putstr_fd("Error\nfailed to fill parser struct\n", 2), 0);
 	if (!parse_struct_content(parser))
 		return (0);
 	if (!check_values_ranges(parser))
 		return (0);
 	return (1);
+}
+
+void	free_tab(char **tab)
+{
+	int	i;
+
+	if (!tab)
+		return ;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
+
+// Free t_parser struct content
+void	free_parser(t_parser *parser)
+{
+	free_tab(parser->ambient);
+	free_tab(parser->camera);
+	free_tab(parser->light);
+	ft_lstclear(&parser->obj, (void *)free_tab);
 }
 
 int	parse(int ac, char **av, t_data *data)
@@ -792,9 +817,13 @@ int	parse(int ac, char **av, t_data *data)
 	file = copy_file_to_array(av[1]);
 	if (!file)
 		return (0);
+	ft_bzero(&parser, sizeof(t_parser));
 	if (!parse_file(file, &parser))
+	{
+		free_parser(&parser);
+		free_tab(file);
 		return (0);
-	printf("Parsing successful\n");
+	}
 	return (1);
 	(void)data;
 }
