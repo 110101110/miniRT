@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/23 01:16:33 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:54:06 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -808,6 +808,74 @@ void	free_parser(t_parser *parser)
 	ft_lstclear(&parser->obj, (void *)free_tab);
 }
 
+t_color	store_rgb(char *str)
+{
+	t_color	color;
+	char	**rgb_values;
+
+	rgb_values = ft_split(str, ',');
+	if (!rgb_values)
+		return ((t_color){0, 0, 0});
+	color.x = (unsigned char)ft_atoi(rgb_values[0]);
+	color.y = (unsigned char)ft_atoi(rgb_values[1]);
+	color.z = (unsigned char)ft_atoi(rgb_values[2]);
+	free_tab(rgb_values);
+	return (color);
+}
+
+int	store_ambient_lightning_data(char **ambient, t_ambient *data)
+{
+	data->ratio = ft_atof(ambient[1]);
+	data->color = store_rgb(ambient[2]);
+	return (1);
+}
+
+t_vec3	store_vec3(char *str)
+{
+	t_vec3	vec;
+	char	**vec_values;
+
+	vec_values = ft_split(str, ',');
+	if (!vec_values)
+		return ((t_vec3){0.0, 0.0, 0.0});
+	vec.x = ft_atof(vec_values[0]);
+	vec.y = ft_atof(vec_values[1]);
+	vec.z = ft_atof(vec_values[2]);
+	free_tab(vec_values);
+	return (vec);
+}
+
+int	store_camera_data(char **camera, t_camera *data)
+{
+	data->origin = store_vec3(camera[1]);
+	data->dir = store_vec3(camera[2]);
+	data->fov = ft_atoi(camera[3]);
+	return (1);
+}
+
+// Add this for bonus :
+// if (nb_of_elements(light) == 4)
+// 	data->color = store_rgb(light[3]);
+int	store_light_data(char **light, t_light *data)
+{
+	data->origin = store_vec3(light[1]);
+	data->ratio = ft_atof(light[2]);
+	return (1);
+}
+
+int	store_data(t_parser *parser, t_data *data)
+{
+	if (!store_ambient_lightning_data(parser->ambient, &data->ambient))
+		return (0);
+	if (!store_camera_data(parser->camera, &data->cam))
+		return (0);
+	if (!store_light_data(parser->light, &data->light))
+		return (0);
+	// if (!store_objects_data(parser->obj, &data->object))
+	// 	return (0);
+	return (1);
+}
+
 int	parse(int ac, char **av, t_data *data)
 {
 	char		**file;
@@ -825,6 +893,13 @@ int	parse(int ac, char **av, t_data *data)
 		free_tab(file);
 		return (0);
 	}
+	if (!store_data(&parser, data))
+	{
+		free_parser(&parser);
+		free_tab(file);
+		return (0);
+	}
+	free_parser(&parser);
+	free_tab(file);
 	return (1);
-	(void)data;
 }
