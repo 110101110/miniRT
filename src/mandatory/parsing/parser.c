@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/23 01:13:24 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/23 01:16:33 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -783,6 +783,7 @@ int	parse_file(char **file, t_parser *parser)
 	return (1);
 }
 
+// Free a string array
 void	free_tab(char **tab)
 {
 	int	i;
