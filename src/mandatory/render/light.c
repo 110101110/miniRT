@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 01:01:30 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/19 23:59:00 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/20 19:56:02 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ t_vec3	apply_lighting(t_color color, t_vec3 hit_p, t_vec3 normal, t_data *data)
 	t_vec3	diffuse;
 	t_vec3	final;
 
-	diffuse = diffuse_light(color, hit_p, normal, &data->light);
 	ambient = ambient_light(color, &data->ambient);
+	if(in_shadow(data, hit_p, normal))
+		return (ambient);
+	diffuse = diffuse_light(color, hit_p, normal, &data->light);
 	final = vec_add(ambient, diffuse);
 	return (final);
 }

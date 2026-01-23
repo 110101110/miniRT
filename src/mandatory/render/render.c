@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 00:18:48 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/19 23:43:35 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/23 18:20:54 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	trace_ray(t_ray ray, t_data *data)
 		rgb = apply_lighting(data->pl.color, hit_p, data->pl.normal, data);
 		return (color_to_int(rgb));
 	}
-	return (0x3eabd6);
+	return (0xf4dc22);
 }
 
 void	render_scene(t_data *data)

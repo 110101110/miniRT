@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:46 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/20 01:26:07 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/20 17:30:25 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdbool.h>
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -44,5 +45,5 @@ double	hit_plane(t_ray ray, t_plane pl);
 // light
 t_vec3	apply_lighting(t_color color, t_vec3 hit_p, t_vec3 normal,
 			t_data *data);
-int		in_shadow(t_data *data, t_vec3 hit_p, t_vec3 normal);
+bool	in_shadow(t_data *data, t_vec3 hit_p, t_vec3 normal);
 #endif
