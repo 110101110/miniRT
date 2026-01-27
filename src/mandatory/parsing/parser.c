@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 23:06:56 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/27 23:11:55 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ int	is_identifier(char *str, char *identifier);
 int	check_range_double(double value, double min, double max);
 int	check_float_overflows(char *str);
 
+// Returns 1 if character is any standard whitespace, else 0.
 int	ft_isspace(int c)
 {
 	return (c == ' ' || c == '\t' || c == '\n'
 		|| c == '\v' || c == '\f' || c == '\r');
 }
 
+// Converts a numeric string to double (handles optional sign and decimal part)
 double	ft_atof(const char *str)
 {
 	double	res;
@@ -50,6 +52,7 @@ double	ft_atof(const char *str)
 	return (res + frac);
 }
 
+// Returns index of the first non-whitespace character in the line.
 static size_t	skip_leading_ws(const char *line)
 {
 	size_t	src;
@@ -60,6 +63,7 @@ static size_t	skip_leading_ws(const char *line)
 	return (src);
 }
 
+// Copies line into norm, collapsing whitespace runs into single spaces.
 static size_t	collapse_ws(const char *line, char *norm, size_t src)
 {
 	size_t	dst;
@@ -86,6 +90,7 @@ static size_t	collapse_ws(const char *line, char *norm, size_t src)
 	return (dst);
 }
 
+// Duplicates a line, trimming and collapsing whitespace for reliable splitting.
 static char	*dup_trim_collapse_ws(const char *line)
 {
 	char	*normalized;
@@ -99,6 +104,7 @@ static char	*dup_trim_collapse_ws(const char *line)
 	return (normalized);
 }
 
+// Splits a .rt line into fields after whitespace normalization.
 static char	**split_rt_fields(const char *line)
 {
 	char	*normalized;
@@ -112,6 +118,7 @@ static char	**split_rt_fields(const char *line)
 	return (split);
 }
 
+// Counts the number of lines in a file.
 static int	count_file_lines(char *filename)
 {
 	int		fd;
@@ -133,6 +140,7 @@ static int	count_file_lines(char *filename)
 	return (count);
 }
 
+// Fills a preallocated array with all lines from a file (NULL-terminated).
 static int	fill_file_array(char *filename, char **file)
 {
 	int		fd;
@@ -154,6 +162,7 @@ static int	fill_file_array(char *filename, char **file)
 	return (1);
 }
 
+// Reads an entire file into a NULL-terminated array of lines.
 char	**copy_file_to_array(char *filename)
 {
 	int		line_count;
@@ -173,6 +182,7 @@ char	**copy_file_to_array(char *filename)
 	return (file);
 }
 
+// Checks whether a line begins with the given identifier token.
 static int	line_starts_with_identifier(char *line, char identifier)
 {
 	if (!line)
@@ -224,6 +234,7 @@ int	is_legal(char c)
 	return (0);
 }
 
+// Returns 1 if all characters in file are legal for the .rt format, else 0.
 int	detect_illegal_characters(char **file)
 {
 	int	i;
@@ -245,6 +256,7 @@ int	detect_illegal_characters(char **file)
 	return (1);
 }
 
+// Counts alphabetical characters in a line.
 static int	count_alpha_chars(char *line)
 {
 	int	count;
@@ -262,6 +274,7 @@ static int	count_alpha_chars(char *line)
 	return (count);
 }
 
+// Returns the first non-whitespace character of a line (or '\0').
 static char	get_first_non_space(char *line)
 {
 	while (*line && ft_isspace(*line))
@@ -269,6 +282,7 @@ static char	get_first_non_space(char *line)
 	return (*line);
 }
 
+// Validates expected alpha count based on the first character case.
 static int	validate_alpha_count(char first, int count)
 {
 	if (first >= 'A' && first <= 'Z')
@@ -355,6 +369,7 @@ int	fill_light_content(char **file, t_parser *parser)
 	return (1);
 }
 
+// Returns the first non-whitespace character of a line (or '\0').
 static char	get_first_char(char *line)
 {
 	int	j;
@@ -365,11 +380,13 @@ static char	get_first_char(char *line)
 	return (line[j]);
 }
 
+// Returns 1 if the character can start an object line, else 0.
 static int	is_obj_line(char c)
 {
 	return (c == 's' || c == 'p' || c == 'c');
 }
 
+// Creates and appends a new object node (split content) to parser->obj.
 static int	add_obj_node(char *line, t_parser *parser)
 {
 	char	**split_content;
@@ -426,6 +443,7 @@ int	fill_parser_struct(char **file, t_parser *parser)
 	return (1);
 }
 
+// Ensures object identifier characters match their expected second letter.
 static int	check_obj_char(char c, char next)
 {
 	if (c == 's' && next != 'p')
@@ -437,6 +455,7 @@ static int	check_obj_char(char c, char next)
 	return (1);
 }
 
+// Scans a line to ensure object identifiers only appear as sp/pl/cy.
 static int	check_line_objects(char *line)
 {
 	int	y;
@@ -527,6 +546,7 @@ int	is_double(char *str)
 	return (1);
 }
 
+// Checks if the string is a valid integer representation.
 static int	is_int(char *str)
 {
 	int	i;
@@ -547,6 +567,7 @@ static int	is_int(char *str)
 	return (1);
 }
 
+// Validates a vec3 string and checks that each component is in [min, max].
 static int	check_vec3_values(char *vec, double min, double max)
 {
 	char	**parts;
@@ -575,6 +596,7 @@ static int	check_vec3_values(char *vec, double min, double max)
 	return (1);
 }
 
+// Returns 1 if vec3 is not (0,0,0), else 0.
 static int	vec3_is_not_zero(char *vec)
 {
 	char	**parts;
@@ -599,6 +621,7 @@ static int	vec3_is_not_zero(char *vec)
 	return (1);
 }
 
+// Validates sphere diameter constraints.
 static int	check_sphere_values(char **content)
 {
 	double	val;
@@ -609,6 +632,7 @@ static int	check_sphere_values(char **content)
 	return (1);
 }
 
+// Validates plane normal vector constraints.
 static int	check_plane_values(char **content)
 {
 	if (!check_vec3_values(content[2], -1.0, 1.0))
@@ -618,6 +642,7 @@ static int	check_plane_values(char **content)
 	return (1);
 }
 
+// Validates cylinder axis/diameter/height constraints.
 static int	check_cylinder_values(char **content)
 {
 	double	val;
@@ -635,6 +660,7 @@ static int	check_cylinder_values(char **content)
 	return (1);
 }
 
+// Validates object-specific numeric constraints after parsing.
 static int	check_object_values(t_parser *parser)
 {
 	t_list	*current;
@@ -710,6 +736,7 @@ int	is_rgb(char *str)
 	return (1);
 }
 
+// Parses one vec3 segment (x, y, or z) and advances the pointer.
 static int	parse_segment_vec3(char **str)
 {
 	int	dot_count;
@@ -889,6 +916,7 @@ int	parse_cylinder_content(char **content)
 	return (1);
 }
 
+// Dispatches parsing based on object identifier.
 static int	parse_single_object(char **content)
 {
 	if (is_identifier(content[0], "sp"))
@@ -900,6 +928,7 @@ static int	parse_single_object(char **content)
 	return (0);
 }
 
+// Parses each object entry in parser->obj.
 int	parse_object_content(t_parser *parser)
 {
 	t_list	*current;
@@ -1031,6 +1060,8 @@ int	check_values_ranges(t_parser *parser)
 	return (1);
 }
 
+// Top-level file parsing pipeline:
+// validate format, split, parse, and range-check.
 int	parse_file(char **file, t_parser *parser)
 {
 	if (!count_mandatory_identifiers(file))
@@ -1075,6 +1106,7 @@ void	free_parser(t_parser *parser)
 	ft_lstclear(&parser->obj, (void *)free_tab);
 }
 
+// Parses an RGB string and stores it as a t_color.
 t_color	store_rgb(char *str)
 {
 	t_color	color;
@@ -1090,6 +1122,7 @@ t_color	store_rgb(char *str)
 	return (color);
 }
 
+// Stores ambient lighting data into the runtime scene struct.
 int	store_ambient_lightning_data(char **ambient, t_ambient *data)
 {
 	data->ratio = ft_atof(ambient[1]);
@@ -1097,6 +1130,7 @@ int	store_ambient_lightning_data(char **ambient, t_ambient *data)
 	return (1);
 }
 
+// Parses a vec3 string and stores it into a t_vec3.
 t_vec3	store_vec3(char *str)
 {
 	t_vec3	vec;
@@ -1112,6 +1146,7 @@ t_vec3	store_vec3(char *str)
 	return (vec);
 }
 
+// Stores camera data into the runtime scene struct.
 int	store_camera_data(char **camera, t_camera *data)
 {
 	data->origin = store_vec3(camera[1]);
@@ -1123,6 +1158,7 @@ int	store_camera_data(char **camera, t_camera *data)
 // Add this for bonus :
 // if (nb_of_elements(light) == 4)
 // 	data->color = store_rgb(light[3]);
+// Stores light data into the runtime scene struct.
 int	store_light_data(char **light, t_light *data)
 {
 	data->origin = store_vec3(light[1]);
@@ -1130,6 +1166,7 @@ int	store_light_data(char **light, t_light *data)
 	return (1);
 }
 
+// Allocates and stores a sphere object into the runtime objects list.
 int	store_sphere_data(char **content, t_data *data)
 {
 	t_sphere	*sphere;
@@ -1154,6 +1191,7 @@ int	store_sphere_data(char **content, t_data *data)
 	return (1);
 }
 
+// Allocates and stores a plane object into the runtime objects list.
 int	store_plane_data(char **content, t_data *data)
 {
 	t_plane		*plane;
@@ -1178,6 +1216,7 @@ int	store_plane_data(char **content, t_data *data)
 	return (1);
 }
 
+// Allocates and stores a cylinder object into the runtime objects list.
 int	store_cylinder_data(char **content, t_data *data)
 {
 	t_cylinder	*cylinder;
@@ -1211,6 +1250,7 @@ void	init_objects_data(t_list *obj_list, t_data *data, t_list **current)
 	data->obj = NULL;
 }
 
+// Iterates parsed object list and stores them into the runtime objects list.
 int	store_objects_data(t_list *obj_list, t_data *data)
 {
 	t_list	*current;
@@ -1240,6 +1280,7 @@ int	store_objects_data(t_list *obj_list, t_data *data)
 	return (1);
 }
 
+// Stores all parsed entities into the runtime scene struct.
 int	store_data(t_parser *parser, t_data *data)
 {
 	if (!store_ambient_lightning_data(parser->ambient, &data->ambient))
@@ -1253,6 +1294,8 @@ int	store_data(t_parser *parser, t_data *data)
 	return (1);
 }
 
+// Main parse entrypoint:
+// validate arguments, parse file, and populate runtime data.
 int	parse(int ac, char **av, t_data *data)
 {
 	char		**file;
