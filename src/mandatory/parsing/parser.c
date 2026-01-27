@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 22:37:30 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/27 23:06:56 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,54 +26,47 @@ int	ft_isspace(int c)
 
 double	ft_atof(const char *str)
 {
-	double	result;
-	double	sign;
-	double	decimal_place;
+	double	res;
+	double	frac;
+	int		neg;
+	int		len;
 
-	result = 0.0;
-	sign = 1.0;
-	decimal_place = 0.1;
 	while (ft_isspace(*str))
 		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = -1.0f;
+	neg = (*str == '-');
+	res = (double)ft_atoi(str);
+	while (*str && *str != '.')
 		str++;
-	}
-	while (ft_isdigit(*str))
-	{
-		result = result * 10.0 + (*str - '0');
-		str++;
-	}
 	if (*str == '.')
 		str++;
-	while (ft_isdigit(*str))
-	{
-		result += (*str - '0') * decimal_place;
-		decimal_place *= 0.1;
-		str++;
-	}
-	return (result * sign);
+	frac = (double)ft_atoi(str);
+	len = 0;
+	while (str[len] && ft_isdigit(str[len]))
+		len++;
+	while (len--)
+		frac /= 10;
+	if (neg)
+		return (res - frac);
+	return (res + frac);
 }
 
-static char	*dup_trim_collapse_ws(const char *line)
+static size_t	skip_leading_ws(const char *line)
 {
-	char	*normalized;
 	size_t	src;
+
+	src = 0;
+	while (line[src] && ft_isspace(line[src]))
+		src++;
+	return (src);
+}
+
+static size_t	collapse_ws(const char *line, char *norm, size_t src)
+{
 	size_t	dst;
 	int		in_space;
 
-	if (!line)
-		return (NULL);
-	normalized = (char *)malloc(ft_strlen(line) + 1);
-	if (!normalized)
-		return (NULL);
-	src = 0;
 	dst = 0;
 	in_space = 0;
-	while (line[src] && ft_isspace(line[src]))
-		src++;
 	while (line[src])
 	{
 		if (ft_isspace(line[src]))
@@ -81,15 +74,28 @@ static char	*dup_trim_collapse_ws(const char *line)
 		else
 		{
 			if (in_space && dst > 0)
-				normalized[dst++] = ' ';
+				norm[dst++] = ' ';
 			in_space = 0;
-			normalized[dst++] = line[src];
+			norm[dst++] = line[src];
 		}
 		src++;
 	}
-	if (dst > 0 && normalized[dst - 1] == ' ')
+	if (dst > 0 && norm[dst - 1] == ' ')
 		dst--;
-	normalized[dst] = '\0';
+	norm[dst] = '\0';
+	return (dst);
+}
+
+static char	*dup_trim_collapse_ws(const char *line)
+{
+	char	*normalized;
+
+	if (!line)
+		return (NULL);
+	normalized = (char *)malloc(ft_strlen(line) + 1);
+	if (!normalized)
+		return (NULL);
+	collapse_ws(line, normalized, skip_leading_ws(line));
 	return (normalized);
 }
 
@@ -106,45 +112,64 @@ static char	**split_rt_fields(const char *line)
 	return (split);
 }
 
-char	**copy_file_to_array(char *filename)
+static int	count_file_lines(char *filename)
 {
 	int		fd;
+	int		count;
 	char	*line;
-	char	**file;
-	int		line_count;
-	int		i;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (NULL);
-	line_count = 0;
+		return (-1);
+	count = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		free(line);
-		line_count++;
+		count++;
 		line = get_next_line(fd);
 	}
 	close(fd);
-	file = (char **)malloc(sizeof(char *) * (line_count + 1));
-	if (!file)
-		return (NULL);
+	return (count);
+}
+
+static int	fill_file_array(char *filename, char **file)
+{
+	int		fd;
+	int		i;
+	char	*line;
+
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-	{
-		free(file);
-		return (NULL);
-	}
+		return (0);
 	i = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
-		file[i] = line;
-		i++;
+		file[i++] = line;
 		line = get_next_line(fd);
 	}
 	file[i] = NULL;
 	close(fd);
+	return (1);
+}
+
+char	**copy_file_to_array(char *filename)
+{
+	int		line_count;
+	char	**file;
+
+	line_count = count_file_lines(filename);
+	if (line_count < 0)
+		return (NULL);
+	file = (char **)malloc(sizeof(char *) * (line_count + 1));
+	if (!file)
+		return (NULL);
+	if (!fill_file_array(filename, file))
+	{
+		free(file);
+		return (NULL);
+	}
 	return (file);
 }
 
@@ -220,47 +245,53 @@ int	detect_illegal_characters(char **file)
 	return (1);
 }
 
+static int	count_alpha_chars(char *line)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (line[i])
+	{
+		if ((line[i] >= 'A' && line[i] <= 'Z')
+			|| (line[i] >= 'a' && line[i] <= 'z'))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+static char	get_first_non_space(char *line)
+{
+	while (*line && ft_isspace(*line))
+		line++;
+	return (*line);
+}
+
+static int	validate_alpha_count(char first, int count)
+{
+	if (first >= 'A' && first <= 'Z')
+		return (count == 1);
+	if (first >= 'a' && first <= 'z')
+		return (count == 2);
+	return (1);
+}
+
 // If first letter is uppercase, should have only 1 alphabetical in the line
 // If first letter is lowercase, should have 2 alphabeticals in the line
 int	one_identifier_per_line(char **file)
 {
 	int		i;
-	int		y;
-	int		count;
-	int		start;
 	char	first;
 
 	i = 0;
 	while (file[i])
 	{
-		y = 0;
-		count = 0;
-		start = 0;
-		while (file[i][y])
-		{
-			if ((file[i][y] >= 'A' && file[i][y] <= 'Z') ||
-				(file[i][y] >= 'a' && file[i][y] <= 'z'))
-				count++;
-			y++;
-		}
-		while (file[i][start] && ft_isspace(file[i][start]))
-			start++;
-		first = file[i][start];
-		if (first == '\0')
-		{
-			i++;
-			continue ;
-		}
-		if (first >= 'A' && first <= 'Z')
-		{
-			if (count != 1)
-				return (0);
-		}
-		else if (first >= 'a' && first <= 'z')
-		{
-			if (count != 2)
-				return (0);
-		}
+		first = get_first_non_space(file[i]);
+		if (first != '\0'
+			&& !validate_alpha_count(first, count_alpha_chars(file[i])))
+			return (0);
 		i++;
 	}
 	return (1);
@@ -324,46 +355,58 @@ int	fill_light_content(char **file, t_parser *parser)
 	return (1);
 }
 
+static char	get_first_char(char *line)
+{
+	int	j;
+
+	j = 0;
+	while (line[j] && ft_isspace(line[j]))
+		j++;
+	return (line[j]);
+}
+
+static int	is_obj_line(char c)
+{
+	return (c == 's' || c == 'p' || c == 'c');
+}
+
+static int	add_obj_node(char *line, t_parser *parser)
+{
+	char	**split_content;
+	t_list	*node;
+
+	split_content = split_rt_fields(line);
+	if (!split_content)
+		return (0);
+	node = ft_lstnew(split_content);
+	if (!node)
+	{
+		free_tab(split_content);
+		return (0);
+	}
+	ft_lstadd_back(&parser->obj, node);
+	return (1);
+}
+
 // Fill the linked list parser->obj with all objects found in the file
 int	fill_obj(char **file, t_parser *parser)
 {
 	int		i;
-	int		j;
-	char	**split_content;
-	t_list	*node;
 	char	first_char;
 
 	i = 0;
 	parser->obj = NULL;
 	while (file[i])
 	{
-		j = 0;
-		while (file[i][j] && ft_isspace(file[i][j]))
-			j++;
-		if (file[i][j] == '\0')
+		first_char = get_first_char(file[i]);
+		if (first_char == '\0' || first_char == 'A'
+			|| first_char == 'C' || first_char == 'L')
 		{
 			i++;
 			continue ;
 		}
-		first_char = file[i][j];
-		if (first_char == 'A' || first_char == 'C' || first_char == 'L')
-		{
-			i++;
-			continue ;
-		}
-		if (first_char == 's' || first_char == 'p' || first_char == 'c')
-		{
-			split_content = split_rt_fields(file[i]);
-			if (!split_content)
-				return (0);
-			node = ft_lstnew(split_content);
-			if (!node)
-			{
-				free_tab(split_content);
-				return (0);
-			}
-			ft_lstadd_back(&parser->obj, node);
-		}
+		if (is_obj_line(first_char) && !add_obj_node(file[i], parser))
+			return (0);
 		i++;
 	}
 	return (1);
@@ -383,40 +426,45 @@ int	fill_parser_struct(char **file, t_parser *parser)
 	return (1);
 }
 
+static int	check_obj_char(char c, char next)
+{
+	if (c == 's' && next != 'p')
+		return (0);
+	if (c == 'p' && next != 'l')
+		return (0);
+	if (c == 'c' && next != 'y')
+		return (0);
+	return (1);
+}
+
+static int	check_line_objects(char *line)
+{
+	int	y;
+
+	y = 0;
+	while (line[y])
+	{
+		if (!check_obj_char(line[y], line[y + 1]))
+			return (0);
+		if (line[y] == 's' || line[y] == 'p' || line[y] == 'c')
+			y++;
+		y++;
+	}
+	return (1);
+}
+
 // If 's' is found , it should be followed by 'p'. (sp)
 // If 'p' is found , it should be followed by 'l'. (pl)
 // If 'c' is found , it should be followed by 'y'. (cy)
 int	detect_illegal_object(char **file)
 {
 	int	i;
-	int	y;
 
 	i = 0;
 	while (file[i])
 	{
-		y = 0;
-		while (file[i][y])
-		{
-			if (file[i][y] == 's')
-			{
-				if (file[i][y + 1] != 'p')
-					return (0);
-				y++;
-			}
-			else if (file[i][y] == 'p')
-			{
-				if (file[i][y + 1] != 'l')
-					return (0);
-				y++;
-			}
-			else if (file[i][y] == 'c')
-			{
-				if (file[i][y + 1] != 'y')
-					return (0);
-				y++;
-			}
-			y++;
-		}
+		if (!check_line_objects(file[i]))
+			return (0);
 		i++;
 	}
 	return (1);
@@ -551,11 +599,46 @@ static int	vec3_is_not_zero(char *vec)
 	return (1);
 }
 
+static int	check_sphere_values(char **content)
+{
+	double	val;
+
+	val = ft_atof(content[2]);
+	if (!check_float_overflows(content[2]) || val <= 0.0)
+		return (ft_putstr_fd("Error\nsp: invalid diameter\n", 2), 0);
+	return (1);
+}
+
+static int	check_plane_values(char **content)
+{
+	if (!check_vec3_values(content[2], -1.0, 1.0))
+		return (ft_putstr_fd("Error\npl: invalid normal vector value\n", 2), 0);
+	if (!vec3_is_not_zero(content[2]))
+		return (ft_putstr_fd("Error\npl: invalid normal vector value\n", 2), 0);
+	return (1);
+}
+
+static int	check_cylinder_values(char **content)
+{
+	double	val;
+
+	if (!check_vec3_values(content[2], -1.0, 1.0))
+		return (ft_putstr_fd("Error\ncy: invalid axis vector value\n", 2), 0);
+	if (!vec3_is_not_zero(content[2]))
+		return (ft_putstr_fd("Error\ncy: invalid axis vector value\n", 2), 0);
+	val = ft_atof(content[3]);
+	if (!check_float_overflows(content[3]) || val <= 0.0)
+		return (ft_putstr_fd("Error\ncy: invalid diameter\n", 2), 0);
+	val = ft_atof(content[4]);
+	if (!check_float_overflows(content[4]) || val <= 0.0)
+		return (ft_putstr_fd("Error\ncy: invalid height\n", 2), 0);
+	return (1);
+}
+
 static int	check_object_values(t_parser *parser)
 {
 	t_list	*current;
 	char	**content;
-	double	val;
 
 	current = parser->obj;
 	while (current)
@@ -563,32 +646,15 @@ static int	check_object_values(t_parser *parser)
 		content = (char **)current->content;
 		if (!content)
 			return (0);
-		if (is_identifier(content[0], "sp"))
-		{
-			val = ft_atof(content[2]);
-			if (!check_float_overflows(content[2]) || val <= 0.0)
-				return (ft_putstr_fd("Error\nsp: invalid diameter\n", 2), 0);
-		}
-		else if (is_identifier(content[0], "pl"))
-		{
-			if (!check_vec3_values(content[2], -1.0, 1.0))
-				return (ft_putstr_fd("Error\npl: invalid normal vector\n", 2), 0);
-			if (!vec3_is_not_zero(content[2]))
-				return (ft_putstr_fd("Error\npl: normal vector can't be null\n", 2), 0);
-		}
-		else if (is_identifier(content[0], "cy"))
-		{
-			if (!check_vec3_values(content[2], -1.0, 1.0))
-				return (ft_putstr_fd("Error\ncy: invalid axis vector\n", 2), 0);
-			if (!vec3_is_not_zero(content[2]))
-				return (ft_putstr_fd("Error\ncy: axis vector can't be null\n", 2), 0);
-			val = ft_atof(content[3]);
-			if (!check_float_overflows(content[3]) || val <= 0.0)
-				return (ft_putstr_fd("Error\ncy: invalid diameter\n", 2), 0);
-			val = ft_atof(content[4]);
-			if (!check_float_overflows(content[4]) || val <= 0.0)
-				return (ft_putstr_fd("Error\ncy: invalid height\n", 2), 0);
-		}
+		if (is_identifier(content[0], "sp")
+			&& !check_sphere_values(content))
+			return (0);
+		else if (is_identifier(content[0], "pl")
+			&& !check_plane_values(content))
+			return (0);
+		else if (is_identifier(content[0], "cy")
+			&& !check_cylinder_values(content))
+			return (0);
 		current = current->next;
 	}
 	return (1);
@@ -823,6 +889,17 @@ int	parse_cylinder_content(char **content)
 	return (1);
 }
 
+static int	parse_single_object(char **content)
+{
+	if (is_identifier(content[0], "sp"))
+		return (parse_sphere_content(content));
+	if (is_identifier(content[0], "pl"))
+		return (parse_plane_content(content));
+	if (is_identifier(content[0], "cy"))
+		return (parse_cylinder_content(content));
+	return (0);
+}
+
 int	parse_object_content(t_parser *parser)
 {
 	t_list	*current;
@@ -830,24 +907,7 @@ int	parse_object_content(t_parser *parser)
 	current = parser->obj;
 	while (current)
 	{
-		if (current->content == NULL)
-			return (0);
-		if (is_identifier(((char **)current->content)[0], "sp"))
-		{
-			if (!parse_sphere_content((char **)current->content))
-				return (0);
-		}
-		else if (is_identifier(((char **)current->content)[0], "pl"))
-		{
-			if (!parse_plane_content((char **)current->content))
-				return (0);
-		}
-		else if (is_identifier(((char **)current->content)[0], "cy"))
-		{
-			if (!parse_cylinder_content((char **)current->content))
-				return (0);
-		}
-		else
+		if (!current->content || !parse_single_object(current->content))
 			return (0);
 		current = current->next;
 	}
@@ -940,7 +1000,7 @@ int	check_camera_values(t_parser *parser)
 		return (ft_putstr_fd("Error\n\
 C: camera orientation vector out of range\n", 2), 0);
 	if (!vec3_is_not_zero(parser->camera[2]))
-		return (ft_putstr_fd("Error\nC: camera orientation vector can't be null\n", 2), 0);
+		return (ft_putstr_fd("Error\nC: orientation vector is null\n", 2), 0);
 	if (!check_int_overflows(parser->camera[3])
 		|| !check_range_int(ft_atoi(parser->camera[3]), 0, 180))
 		return (ft_putstr_fd("Error\nC: FOV out of range\n", 2), 0);
