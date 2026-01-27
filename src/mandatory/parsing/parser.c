@@ -6,17 +6,11 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 23:11:55 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/27 23:17:23 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minirt.h"
-
-void	free_tab(char **tab);
-int	nb_of_elements(char **tab);
-int	is_identifier(char *str, char *identifier);
-int	check_range_double(double value, double min, double max);
-int	check_float_overflows(char *str);
 
 // Returns 1 if character is any standard whitespace, else 0.
 int	ft_isspace(int c)
