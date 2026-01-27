@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 00:37:07 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/27 19:35:59 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,36 @@ typedef struct	s_cylinder
 	t_color	color;
 }	t_cylinder;
 
-typedef	enum	e_type
+typedef struct s_cy_data
+{
+	double	a;
+	double	b;
+	double	c;
+	double	disc;
+}			t_cy_data;
+
+typedef enum	e_type
 {
 	SPHERE,
 	PLANE,
 	CYLINDER,
 }	t_type;
 
-typedef	struct s_object
+typedef struct s_object
 {
 	t_type	type;
 	void	*data;
-	struct s_object *next;
+	t_vec3	color;
+	struct s_object	*next;
 }	t_object;
+
+typedef struct s_hit
+{
+	double	t;
+	t_vec3	p;
+	t_vec3	n;
+	t_color	rgb;
+}			t_hit;
 
 typedef struct s_ray
 {
@@ -96,10 +113,7 @@ typedef struct s_data
 	t_img		img;
 	t_camera	cam;
 	t_ray		ray;
-	// t_object	object; refactoring after cylinder
+	t_object	*obj;
 	t_light		light;
 	t_ambient	ambient;
-	t_sphere	sp;
-	t_plane		pl;
-	t_cylinder	cy;
 }				t_data;
