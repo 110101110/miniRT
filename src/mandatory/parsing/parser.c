@@ -6,11 +6,17 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/23 01:54:06 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/27 22:37:30 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minirt.h"
+
+void	free_tab(char **tab);
+int	nb_of_elements(char **tab);
+int	is_identifier(char *str, char *identifier);
+int	check_range_double(double value, double min, double max);
+int	check_float_overflows(char *str);
 
 int	ft_isspace(int c)
 {
@@ -18,15 +24,15 @@ int	ft_isspace(int c)
 		|| c == '\v' || c == '\f' || c == '\r');
 }
 
-float	ft_atof(const char *str)
+double	ft_atof(const char *str)
 {
-	float	result;
-	float	sign;
-	float	decimal_place;
+	double	result;
+	double	sign;
+	double	decimal_place;
 
-	result = 0.0f;
-	sign = 1.0f;
-	decimal_place = 0.1f;
+	result = 0.0;
+	sign = 1.0;
+	decimal_place = 0.1;
 	while (ft_isspace(*str))
 		str++;
 	if (*str == '-' || *str == '+')
@@ -37,7 +43,7 @@ float	ft_atof(const char *str)
 	}
 	while (ft_isdigit(*str))
 	{
-		result = result * 10.0f + (*str - '0');
+		result = result * 10.0 + (*str - '0');
 		str++;
 	}
 	if (*str == '.')
@@ -45,10 +51,59 @@ float	ft_atof(const char *str)
 	while (ft_isdigit(*str))
 	{
 		result += (*str - '0') * decimal_place;
-		decimal_place *= 0.1f;
+		decimal_place *= 0.1;
 		str++;
 	}
 	return (result * sign);
+}
+
+static char	*dup_trim_collapse_ws(const char *line)
+{
+	char	*normalized;
+	size_t	src;
+	size_t	dst;
+	int		in_space;
+
+	if (!line)
+		return (NULL);
+	normalized = (char *)malloc(ft_strlen(line) + 1);
+	if (!normalized)
+		return (NULL);
+	src = 0;
+	dst = 0;
+	in_space = 0;
+	while (line[src] && ft_isspace(line[src]))
+		src++;
+	while (line[src])
+	{
+		if (ft_isspace(line[src]))
+			in_space = 1;
+		else
+		{
+			if (in_space && dst > 0)
+				normalized[dst++] = ' ';
+			in_space = 0;
+			normalized[dst++] = line[src];
+		}
+		src++;
+	}
+	if (dst > 0 && normalized[dst - 1] == ' ')
+		dst--;
+	normalized[dst] = '\0';
+	return (normalized);
+}
+
+static char	**split_rt_fields(const char *line)
+{
+	char	*normalized;
+	char	**split;
+
+	normalized = dup_trim_collapse_ws(line);
+	if (!normalized)
+		return (NULL);
+	split = ft_split(normalized, ' ');
+	free(normalized);
+	return (split);
 }
 
 char	**copy_file_to_array(char *filename)
@@ -63,13 +118,12 @@ char	**copy_file_to_array(char *filename)
 	if (fd < 0)
 		return (NULL);
 	line_count = 0;
-	while (1)
+	line = get_next_line(fd);
+	while (line)
 	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
 		free(line);
 		line_count++;
+		line = get_next_line(fd);
 	}
 	close(fd);
 	file = (char **)malloc(sizeof(char *) * (line_count + 1));
@@ -77,18 +131,35 @@ char	**copy_file_to_array(char *filename)
 		return (NULL);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (NULL);
-	i = 0;
-	while (1)
 	{
+		free(file);
+		return (NULL);
+	}
+	i = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		file[i] = line;
+		i++;
 		line = get_next_line(fd);
-		if (!line)
-			break ;
-		file[i++] = line;
 	}
 	file[i] = NULL;
 	close(fd);
 	return (file);
+}
+
+static int	line_starts_with_identifier(char *line, char identifier)
+{
+	if (!line)
+		return (0);
+	while (*line && ft_isspace(*line))
+		line++;
+	if (*line != identifier)
+		return (0);
+	line++;
+	if (*line == '\0' || *line == '\n' || ft_isspace(*line))
+		return (1);
+	return (0);
 }
 
 // Simply count the numbers of 'A', 'C', and 'L' characters in *file.
@@ -96,41 +167,32 @@ char	**copy_file_to_array(char *filename)
 int	count_mandatory_identifiers(char **file)
 {
 	int	i;
-	int	y;
 	int	a_count;
 	int	c_count;
 	int	l_count;
 
 	i = 0;
-	y = 0;
 	a_count = 0;
 	c_count = 0;
 	l_count = 0;
 	while (file[i])
 	{
-		while (file[i][y])
-		{
-			if (file[i][y] == 'A')
-				a_count++;
-			else if (file[i][y] == 'C')
-				c_count++;
-			else if (file[i][y] == 'L')
-				l_count++;
-			y++;
-		}
-		y = 0;
+		if (line_starts_with_identifier(file[i], 'A'))
+			a_count++;
+		else if (line_starts_with_identifier(file[i], 'C'))
+			c_count++;
+		else if (line_starts_with_identifier(file[i], 'L'))
+			l_count++;
 		i++;
 	}
-	if (a_count != 1 || c_count != 1 || l_count != 1)
-		return (0);
-	return (1);
+	return (a_count == 1 && c_count == 1 && l_count == 1);
 }
 
 // Legal characters are : A, C, L, sp, pl, cy
 // " ", "\n", "0"-"9", ".", ",", "-", "+"
 int	is_legal(char c)
 {
-	if ((c >= '0' && c <= '9') || c == ' ' || c == '\n' || c == '.'
+	if ((c >= '0' && c <= '9') || ft_isspace(c) || c == '.'
 		|| c == ',' || c == '-' || c == 'A' || c == 'C' || c == 'L'
 		|| c == 's' || c == 'p' || c == 'l' || c == 'c' || c == 'y' || c == '+')
 		return (1);
@@ -162,15 +224,18 @@ int	detect_illegal_characters(char **file)
 // If first letter is lowercase, should have 2 alphabeticals in the line
 int	one_identifier_per_line(char **file)
 {
-	int	i;
-	int	y;
-	int	count;
+	int		i;
+	int		y;
+	int		count;
+	int		start;
+	char	first;
 
 	i = 0;
 	while (file[i])
 	{
 		y = 0;
 		count = 0;
+		start = 0;
 		while (file[i][y])
 		{
 			if ((file[i][y] >= 'A' && file[i][y] <= 'Z') ||
@@ -178,12 +243,20 @@ int	one_identifier_per_line(char **file)
 				count++;
 			y++;
 		}
-		if (file[i][0] >= 'A' && file[i][0] <= 'Z')
+		while (file[i][start] && ft_isspace(file[i][start]))
+			start++;
+		first = file[i][start];
+		if (first == '\0')
+		{
+			i++;
+			continue ;
+		}
+		if (first >= 'A' && first <= 'Z')
 		{
 			if (count != 1)
 				return (0);
 		}
-		else if (file[i][0] >= 'a' && file[i][0] <= 'z')
+		else if (first >= 'a' && first <= 'z')
 		{
 			if (count != 2)
 				return (0);
@@ -198,19 +271,12 @@ int	one_identifier_per_line(char **file)
 int	where_is(char **file, char identifier)
 {
 	int	i;
-	int	y;
 
 	i = 0;
-	y = 0;
 	while (file[i])
 	{
-		while (file[i][y])
-		{
-			if (file[i][y] == identifier)
-				return (i);
-			y++;
-		}
-		y = 0;
+		if (line_starts_with_identifier(file[i], identifier))
+			return (i);
 		i++;
 	}
 	return (-1);
@@ -224,7 +290,7 @@ int	fill_ambient_content(char **file, t_parser *parser)
 	line = where_is(file, 'A');
 	if (line == -1)
 		return (0);
-	parser->ambient = ft_split(file[line], ' ');
+	parser->ambient = split_rt_fields(file[line]);
 	if (!parser->ambient)
 		return (0);
 	return (1);
@@ -238,7 +304,7 @@ int	fill_camera_content(char **file, t_parser *parser)
 	line = where_is(file, 'C');
 	if (line == -1)
 		return (0);
-	parser->camera = ft_split(file[line], ' ');
+	parser->camera = split_rt_fields(file[line]);
 	if (!parser->camera)
 		return (0);
 	return (1);
@@ -252,7 +318,7 @@ int	fill_light_content(char **file, t_parser *parser)
 	line = where_is(file, 'L');
 	if (line == -1)
 		return (0);
-	parser->light = ft_split(file[line], ' ');
+	parser->light = split_rt_fields(file[line]);
 	if (!parser->light)
 		return (0);
 	return (1);
@@ -272,8 +338,13 @@ int	fill_obj(char **file, t_parser *parser)
 	while (file[i])
 	{
 		j = 0;
-		while (file[i][j] == ' ')
+		while (file[i][j] && ft_isspace(file[i][j]))
 			j++;
+		if (file[i][j] == '\0')
+		{
+			i++;
+			continue ;
+		}
 		first_char = file[i][j];
 		if (first_char == 'A' || first_char == 'C' || first_char == 'L')
 		{
@@ -282,12 +353,15 @@ int	fill_obj(char **file, t_parser *parser)
 		}
 		if (first_char == 's' || first_char == 'p' || first_char == 'c')
 		{
-			split_content = ft_split(file[i], ' ');
+			split_content = split_rt_fields(file[i]);
 			if (!split_content)
 				return (0);
 			node = ft_lstnew(split_content);
 			if (!node)
+			{
+				free_tab(split_content);
 				return (0);
+			}
 			ft_lstadd_back(&parser->obj, node);
 		}
 		i++;
@@ -371,7 +445,7 @@ int	is_identifier(char *str, char *identifier)
 			return (0);
 		i++;
 	}
-	if (str[i] != '\0')
+	if (str[i] != '\0' && str[i] != '\n' && !ft_isspace(str[i]))
 		return (0);
 	return (1);
 }
@@ -386,12 +460,14 @@ int	is_double(char *str)
 	dot_count = 0;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
+	if (!ft_isdigit(str[i]))
+		return (0);
 	while (str[i] && str[i] != '\n')
 	{
 		if (str[i] == '.')
 		{
 			dot_count++;
-			if (i == 0 || str[i + 1] == '\0' || str[i + 1] == '\n')
+			if (str[i + 1] == '\0' || str[i + 1] == '\n')
 				return (0);
 		}
 		else if (str[i] < '0' || str[i] > '9')
@@ -400,6 +476,121 @@ int	is_double(char *str)
 	}
 	if (dot_count > 1)
 		return (0);
+	return (1);
+}
+
+static int	is_int(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	if (!ft_isdigit(str[i]))
+		return (0);
+	while (str[i] && str[i] != '\n')
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	check_vec3_values(char *vec, double min, double max)
+{
+	char	**parts;
+	int		idx;
+
+	parts = ft_split(vec, ',');
+	if (!parts)
+		return (0);
+	if (nb_of_elements(parts) != 3)
+	{
+		free_tab(parts);
+		return (0);
+	}
+	idx = 0;
+	while (idx < 3)
+	{
+		if (!is_double(parts[idx]) || !check_float_overflows(parts[idx])
+			|| !check_range_double(ft_atof(parts[idx]), min, max))
+		{
+			free_tab(parts);
+			return (0);
+		}
+		idx++;
+	}
+	free_tab(parts);
+	return (1);
+}
+
+static int	vec3_is_not_zero(char *vec)
+{
+	char	**parts;
+	double	x;
+	double	y;
+	double	z;
+
+	parts = ft_split(vec, ',');
+	if (!parts)
+		return (0);
+	if (nb_of_elements(parts) != 3)
+	{
+		free_tab(parts);
+		return (0);
+	}
+	x = ft_atof(parts[0]);
+	y = ft_atof(parts[1]);
+	z = ft_atof(parts[2]);
+	free_tab(parts);
+	if (x == 0.0 && y == 0.0 && z == 0.0)
+		return (0);
+	return (1);
+}
+
+static int	check_object_values(t_parser *parser)
+{
+	t_list	*current;
+	char	**content;
+	double	val;
+
+	current = parser->obj;
+	while (current)
+	{
+		content = (char **)current->content;
+		if (!content)
+			return (0);
+		if (is_identifier(content[0], "sp"))
+		{
+			val = ft_atof(content[2]);
+			if (!check_float_overflows(content[2]) || val <= 0.0)
+				return (ft_putstr_fd("Error\nsp: invalid diameter\n", 2), 0);
+		}
+		else if (is_identifier(content[0], "pl"))
+		{
+			if (!check_vec3_values(content[2], -1.0, 1.0))
+				return (ft_putstr_fd("Error\npl: invalid normal vector\n", 2), 0);
+			if (!vec3_is_not_zero(content[2]))
+				return (ft_putstr_fd("Error\npl: normal vector can't be null\n", 2), 0);
+		}
+		else if (is_identifier(content[0], "cy"))
+		{
+			if (!check_vec3_values(content[2], -1.0, 1.0))
+				return (ft_putstr_fd("Error\ncy: invalid axis vector\n", 2), 0);
+			if (!vec3_is_not_zero(content[2]))
+				return (ft_putstr_fd("Error\ncy: axis vector can't be null\n", 2), 0);
+			val = ft_atof(content[3]);
+			if (!check_float_overflows(content[3]) || val <= 0.0)
+				return (ft_putstr_fd("Error\ncy: invalid diameter\n", 2), 0);
+			val = ft_atof(content[4]);
+			if (!check_float_overflows(content[4]) || val <= 0.0)
+				return (ft_putstr_fd("Error\ncy: invalid height\n", 2), 0);
+		}
+		current = current->next;
+	}
 	return (1);
 }
 
@@ -455,15 +646,28 @@ int	is_rgb(char *str)
 
 static int	parse_segment_vec3(char **str)
 {
+	int	dot_count;
+
 	if (!str || !*str)
 		return (-1);
-	while (ft_isdigit(**str) || **str == '-' || **str == '+')
+	dot_count = 0;
+	if (**str == '-' || **str == '+')
 		(*str)++;
-	if (**str == '.')
+	if (!ft_isdigit(**str))
+		return (-1);
+	while (**str && **str != ',' && **str != '\n')
 	{
+		if (**str == '.')
+		{
+			dot_count++;
+			if (dot_count > 1)
+				return (-1);
+			if (!ft_isdigit(*(*str + 1)))
+				return (-1);
+		}
+		else if (!ft_isdigit(**str))
+			return (-1);
 		(*str)++;
-		while (ft_isdigit(**str))
-			(*str)++;
 	}
 	return (0);
 }
@@ -528,7 +732,7 @@ int	parse_camera_content(char **camera)
 		return (ft_putstr_fd("Error\nC: invalid coordinates\n", 2), 0);
 	if (!is_vec3(camera[2]))
 		return (ft_putstr_fd("Error\nC: invalid orientation vector\n", 2), 0);
-	if (!is_double(camera[3]))
+	if (!is_int(camera[3]))
 		return (ft_putstr_fd("Error\nC: invalid FOV\n", 2), 0);
 	return (1);
 }
@@ -686,7 +890,7 @@ int	check_float_overflows(char *str)
 	double	val;
 
 	val = ft_atof(str);
-	if (val > __FLT_MAX__ || val < -__FLT_MAX__)
+	if (val > DBL_MAX || val < -DBL_MAX)
 		return (0);
 	return (1);
 }
@@ -732,12 +936,13 @@ A: ambient lighting ratio out of range\n", 2), 0);
 // Check FOV [0 - 180]
 int	check_camera_values(t_parser *parser)
 {
-	if (!check_float_overflows(parser->camera[2])
-		|| !check_range_double(ft_atof(parser->camera[2]), -1.0, 1.0))
+	if (!check_vec3_values(parser->camera[2], -1.0, 1.0))
 		return (ft_putstr_fd("Error\n\
 C: camera orientation vector out of range\n", 2), 0);
-	if (!check_float_overflows(parser->camera[3])
-		|| !check_range_double(ft_atof(parser->camera[3]), 0.0, 180.0))
+	if (!vec3_is_not_zero(parser->camera[2]))
+		return (ft_putstr_fd("Error\nC: camera orientation vector can't be null\n", 2), 0);
+	if (!check_int_overflows(parser->camera[3])
+		|| !check_range_int(ft_atoi(parser->camera[3]), 0, 180))
 		return (ft_putstr_fd("Error\nC: FOV out of range\n", 2), 0);
 	return (1);
 }
@@ -760,6 +965,8 @@ int	check_values_ranges(t_parser *parser)
 	if (!check_camera_values(parser))
 		return (0);
 	if (!check_light_values(parser))
+		return (0);
+	if (!check_object_values(parser))
 		return (0);
 	return (1);
 }
@@ -863,6 +1070,116 @@ int	store_light_data(char **light, t_light *data)
 	return (1);
 }
 
+int	store_sphere_data(char **content, t_data *data)
+{
+	t_sphere	*sphere;
+	t_object	*obj_node;
+
+	sphere = (t_sphere *)malloc(sizeof(t_sphere));
+	if (!sphere)
+		return (0);
+	sphere->center = store_vec3(content[1]);
+	sphere->diameter = ft_atof(content[2]);
+	sphere->color = store_rgb(content[3]);
+	obj_node = (t_object *)malloc(sizeof(t_object));
+	if (!obj_node)
+	{
+		free(sphere);
+		return (0);
+	}
+	obj_node->type = SPHERE;
+	obj_node->data = sphere;
+	obj_node->next = data->obj;
+	data->obj = obj_node;
+	return (1);
+}
+
+int	store_plane_data(char **content, t_data *data)
+{
+	t_plane		*plane;
+	t_object	*obj_node;
+
+	plane = (t_plane *)malloc(sizeof(t_plane));
+	if (!plane)
+		return (0);
+	plane->point = store_vec3(content[1]);
+	plane->normal = store_vec3(content[2]);
+	plane->color = store_rgb(content[3]);
+	obj_node = (t_object *)malloc(sizeof(t_object));
+	if (!obj_node)
+	{
+		free(plane);
+		return (0);
+	}
+	obj_node->type = PLANE;
+	obj_node->data = plane;
+	obj_node->next = data->obj;
+	data->obj = obj_node;
+	return (1);
+}
+
+int	store_cylinder_data(char **content, t_data *data)
+{
+	t_cylinder	*cylinder;
+	t_object	*obj_node;
+
+	cylinder = (t_cylinder *)malloc(sizeof(t_cylinder));
+	if (!cylinder)
+		return (0);
+	cylinder->center = store_vec3(content[1]);
+	cylinder->axis = store_vec3(content[2]);
+	cylinder->diameter = ft_atof(content[3]);
+	cylinder->height = ft_atof(content[4]);
+	cylinder->color = store_rgb(content[5]);
+	obj_node = (t_object *)malloc(sizeof(t_object));
+	if (!obj_node)
+	{
+		free(cylinder);
+		return (0);
+	}
+	obj_node->type = CYLINDER;
+	obj_node->data = cylinder;
+	obj_node->next = data->obj;
+	data->obj = obj_node;
+	return (1);
+}
+
+// goofy helper function
+void	init_objects_data(t_list *obj_list, t_data *data, t_list **current)
+{
+	*current = obj_list;
+	data->obj = NULL;
+}
+
+int	store_objects_data(t_list *obj_list, t_data *data)
+{
+	t_list	*current;
+	char	**content;
+
+	init_objects_data(obj_list, data, &current);
+	while (current)
+	{
+		content = (char **)current->content;
+		if (is_identifier(content[0], "sp"))
+		{
+			if (!store_sphere_data(content, data))
+				return (0);
+		}
+		else if (is_identifier(content[0], "pl"))
+		{
+			if (!store_plane_data(content, data))
+				return (0);
+		}
+		else if (is_identifier(content[0], "cy"))
+		{
+			if (!store_cylinder_data(content, data))
+				return (0);
+		}
+		current = current->next;
+	}
+	return (1);
+}
+
 int	store_data(t_parser *parser, t_data *data)
 {
 	if (!store_ambient_lightning_data(parser->ambient, &data->ambient))
@@ -871,8 +1188,8 @@ int	store_data(t_parser *parser, t_data *data)
 		return (0);
 	if (!store_light_data(parser->light, &data->light))
 		return (0);
-	// if (!store_objects_data(parser->obj, &data->object))
-	// 	return (0);
+	if (!store_objects_data(parser->obj, data))
+		return (0);
 	return (1);
 }
 
