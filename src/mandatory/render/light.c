@@ -6,13 +6,14 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 01:01:30 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/20 19:56:02 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/27 18:28:30 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minirt.h"
 
-t_vec3	diffuse_light(t_color color, t_vec3 hit_p, t_vec3 normal, t_light *light)
+t_vec3	diffuse_light(t_color color, t_vec3 hit_p, t_vec3 normal,
+		t_light *light)
 {
 	t_vec3	light_dir;
 	double	dot;
@@ -31,6 +32,7 @@ t_vec3	diffuse_light(t_color color, t_vec3 hit_p, t_vec3 normal, t_light *light)
 t_vec3	ambient_light(t_color color, t_ambient *ambient)
 {
 	t_color	res;
+
 	res = color_mult(color, ambient->color);
 	res = vec_scale(res, ambient->ratio);
 	return (res);
@@ -43,7 +45,7 @@ t_vec3	apply_lighting(t_color color, t_vec3 hit_p, t_vec3 normal, t_data *data)
 	t_vec3	final;
 
 	ambient = ambient_light(color, &data->ambient);
-	if(in_shadow(data, hit_p, normal))
+	if (in_shadow(data, hit_p, normal))
 		return (ambient);
 	diffuse = diffuse_light(color, hit_p, normal, &data->light);
 	final = vec_add(ambient, diffuse);

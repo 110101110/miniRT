@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 16:14:03 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/15 00:50:19 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/27 18:25:22 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	init_camera(t_camera *cam, double aspect_ratio)
 	t_vec3	world_up;
 
 	theta = (cam->fov * M_PI) / 180.0;
-	// if fov is horizontal, it should be able to calculate viewport width
 	cam->viewport_w = 2.0 * tan(theta / 2.0);
 	cam->viewport_h = cam->viewport_w / aspect_ratio;
 	world_up = vec_init(0, 1, 0);
