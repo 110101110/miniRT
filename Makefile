@@ -6,7 +6,7 @@
 #    By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/20 17:29:07 by qizhang          ###   ########.fr        #
+#    Updated: 2026/01/27 16:13:19 by qizhang          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,8 @@ SRC_MAND_FILES = \
 	mandatory/parsing/parser.c \
 	mandatory/objects/sphere.c \
 	mandatory/objects/plane.c \
+	mandatory/objects/cylinder.c\
+	mandatory/objects/hit_object.c
 
 # 3. BONUS FILES
 

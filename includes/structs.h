@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/16 17:18:55 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/27 00:37:07 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ typedef struct	s_plane
 	t_vec3		normal;
 	t_color		color;
 }				t_plane;
+
+typedef struct	s_cylinder
+{
+	t_vec3	center;
+	t_vec3	axis; //normalised
+	double	diamter;
+	double	height;
+	t_color	color;
+}	t_cylinder;
 
 typedef	enum	e_type
 {
@@ -92,4 +101,5 @@ typedef struct s_data
 	t_ambient	ambient;
 	t_sphere	sp;
 	t_plane		pl;
+	t_cylinder	cy;
 }				t_data;
