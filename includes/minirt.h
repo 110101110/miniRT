@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:46 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 19:41:41 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/27 19:49:32 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ double	hit_sphere(t_ray ray, t_sphere sp, t_vec3 *normal);
 double	hit_plane(t_ray ray, t_plane pl, t_vec3 *normal);
 double	hit_cylinder(t_ray ray, t_cylinder cy, t_vec3 *normal);
 double	hit_disk(t_ray r, t_vec3 center, t_vec3 normal, double radius);
-t_vec3 get_cy_normal(t_vec3 hit_p, t_cylinder cy);
+t_vec3	get_cy_normal(t_vec3 hit_p, t_cylinder cy);
 
 // light
 t_vec3	apply_lighting(t_color color, t_vec3 hit_p, t_vec3 normal,
