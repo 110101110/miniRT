@@ -3,31 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 23:08:13 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/22 01:03:58 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/24 21:43:03 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/05 12:27:52 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	*ft_memcpy(void *dst, const void *src, unsigned int n)
+/*
+ft_memcpy va copier les 'n' premiers octets de la zone 'src' dans la zone 'dest'
+Les zones memoires ne doivent pas se chevaucher ! On doit utiliser memmove sinon
+La valeur de retour est un pointeur sur dest.
+*/
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	unsigned char	*temp_dst;
-	unsigned char	*temp_src;
+	size_t		i;
+	char		*destination;
+	const char	*source;
 
-	if (dst == 0 && src == 0)
+	if (!dest && !src)
+		return (NULL);
+	i = 0;
+	destination = (char *)dest;
+	source = (const char *)src;
+	while (i < n)
 	{
-		return (dst);
+		destination[i] = source[i];
+		i++;
 	}
-	temp_dst = (unsigned char *)dst;
-	temp_src = (unsigned char *)src;
-	while (n > 0)
-	{
-		*temp_dst = *temp_src;
-		temp_dst++;
-		temp_src++;
-		n--;
-	}
-	return (dst);
+	return (dest);
 }

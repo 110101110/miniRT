@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 15:01:19 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/19 15:38:32 by qizhang          ###   ########.fr       */
+/*   Created: 2024/08/17 19:32:10 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/17 23:39:05 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
-#include <stdlib.h>
 
-t_list	*ft_lstnew(void *content)
+/*
+ft_lstiter applique a tout les maillons de la liste 'lst', la fonction (*f).
+*/
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	t_list	*head;
+	t_list	*tmp;
 
-	head = (t_list *) malloc(sizeof(t_list));
-	if (!head)
-		return (0);
-	head -> content = content;
-	head -> next = NULL;
-	return (head);
+	if (!lst)
+		return ;
+	tmp = lst;
+	while (tmp)
+	{
+		(*f)(tmp->content);
+		tmp = tmp->next;
+	}
 }

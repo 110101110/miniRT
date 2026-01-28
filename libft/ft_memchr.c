@@ -3,28 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 21:41:39 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/22 01:44:05 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/23 19:00:22 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/05 12:27:39 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	*ft_memchr(const void *s, int c, unsigned int n)
+/*
+ft_memchr scan les 'n' premiers octets pointee par 's'
+Il cherche la premiere occurence du caractere 'c' dans cette zone scannee.
+Retourne un pointeur sur cet occurence si trouvee ou NULL s'il n'est pas trv.
+'c' et 's' sont interpretees par des unsigned char.
+*/
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned char	cc;
+	size_t			i;
 	unsigned char	*str;
-	unsigned int	i;
 
-	cc = (unsigned char)c;
-	str = (unsigned char *)s;
 	i = 0;
+	str = (unsigned char *)s;
 	while (i < n)
 	{
-		if (str[i] == cc)
+		if (str[i] == (unsigned char)c)
 			return ((void *)&str[i]);
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

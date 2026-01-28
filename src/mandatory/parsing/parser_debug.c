@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
+/*   parser_debug.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 16:09:08 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/19 16:40:51 by qizhang          ###   ########.fr       */
+/*   Created: 2026/01/21 17:52:20 by kevisout          #+#    #+#             */
+/*   Updated: 2026/01/21 22:41:54 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
-#include <stdlib.h>
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+#include "../../../includes/minirt.h"
+
+void	print_tab(char **tab)
 {
-	del(lst -> content);
-	free(lst);
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		printf("%s\n", tab[i]);
+		i++;
+	}
 }

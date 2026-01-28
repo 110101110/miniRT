@@ -3,72 +3,76 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 20:01:50 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/22 01:40:44 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/21 18:55:01 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/12 14:05:53 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
-#include <stdlib.h>
 
-static char	*pre_conv(int len);
-static int	int_len(long nbr);
+/*
+Cette fonction nous sers a connaitre la taille a malloc pour notre nombre.
+Renvoie 5 si nb = -4234
+Renvoie 3 si nb = 102
+*/
+int	get_nbr_len(long nb)
+{
+	int	len;
 
+	len = 0;
+	if (nb == 0)
+		return (1);
+	if (nb < 0)
+	{
+		len++;
+		nb *= -1;
+	}
+	while (nb > 0)
+	{
+		len++;
+		nb = nb / 10;
+	}
+	return (len);
+}
+
+/*
+ft_itoa transforme un int (n) en sa representation en chaine de caracteres.
+1 - i = la longueur a malloc (longueur litteral du nombre avec symbole '-')
+2 - on allour i + 1 pour laisser une place au '\0'a
+3 - Cas nb == 0 : On retourne la chaine de caractere : str = "0\0";
+4 - Cas nb < 0  : On met un '-' au debut de la chaine, et on transforme nbr
+	en un naombre positif avec une multiplication negatif * negatif
+5 - Ici, notre nombre est forcement superieur a 0, donc on peut cook :
+	str[i] sera egal a nbr % 10 c'est a dire le dernier chiffre du nombre
+	actuel, et ce, jusqu'a que nbr soit egal a 0.
+	Pour ca, a chaque iteration, on divise nbr par 10.
+	Et bien sur, on transforme notre int en ascii en faisant + '0' (48).
+*/
 char	*ft_itoa(int n)
 {
-	int		len;
-	int		i;
-	char	*res;
 	long	nbr;
+	int		i;
+	char	*str;
 
 	nbr = n;
-	len = int_len(nbr);
-	res = pre_conv(len);
-	if (!res)
-		return (0);
-	if (nbr < 0)
-		nbr = -nbr;
-	i = len - 1;
-	while (nbr != 0)
-	{
-		res[i] = ((nbr % 10) + 48);
-		nbr = nbr / 10;
-		i --;
-	}
-	if (n < 0)
-		res[0] = '-';
-	res[len] = 0;
-	return (res);
-}
-
-static char	*pre_conv(int len)
-{
-	char	*tmp;
-
-	tmp = malloc((len + 1) * sizeof(char));
-	if (!tmp)
-		return (0);
-	tmp[0] = '0';
-	return (tmp);
-}
-
-static int	int_len(long nbr)
-{
-	int	count;
-
-	count = 0;
-	if (nbr < 0)
-	{
-		count ++;
-		nbr = -nbr;
-	}
+	i = get_nbr_len(nbr);
+	str = malloc(i + 1);
+	if (!str)
+		return (NULL);
+	str[i--] = '\0';
 	if (nbr == 0)
-		count ++;
-	while (nbr != 0)
+		str[0] = '0';
+	if (nbr < 0)
 	{
-		nbr /= 10;
-		count ++;
+		str[0] = '-';
+		nbr *= -1;
 	}
-	return (count);
+	while (nbr > 0)
+	{
+		str[i--] = (nbr % 10) + '0';
+		nbr /= 10;
+	}
+	return (str);
 }

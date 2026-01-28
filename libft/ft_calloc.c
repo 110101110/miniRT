@@ -3,25 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 22:32:05 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/22 01:23:58 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/21 16:00:35 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/12 14:02:21 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
-#include <stdlib.h>
 
-void	*ft_calloc(unsigned int count, unsigned int size)
+/*
+ft_calloc alloue (nmemb * size) octets avec malloc().
+Cet espace est rempli de 0. La ou malloc ne rempli rien.
+
+Si la multiplication de (nmemb * size) depasse INT_MAX
+alors ft_calloc retourne une erreur (NULL).
+
+On cast un (void *) en (char *) car c'est pour indiquer qu'on veut
+acceder a la memoire (celle pointee par void*) octet par octet.
+Et pour indiquer ca, il faut cast un char, qui est typiquement 1 octet.
+*/
+
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	unsigned char	*tmp;
-	unsigned int	i;
+	void	*ret;
+	size_t	i;
 
+	if (size != 0 && nmemb > SIZE_MAX / size)
+		return (NULL);
+	ret = malloc(nmemb * size);
+	if (!ret)
+		return (NULL);
 	i = 0;
-	tmp = malloc(count * size);
-	if (!tmp)
-		return (0);
-	while (i < count * size)
-		tmp[i++] = 0;
-	return (tmp);
+	while (i < nmemb * size)
+		((char *)ret)[i++] = 0;
+	return (ret);
 }

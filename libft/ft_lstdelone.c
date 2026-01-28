@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 15:21:55 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/22 14:15:42 by qizhang          ###   ########.fr       */
+/*   Created: 2024/08/17 19:12:30 by kevisout          #+#    #+#             */
+/*   Updated: 2024/08/17 23:48:11 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-void	ft_lstadd_front(t_list **lst, t_list *new)
+/*
+ft_lstdelone libere la supprime le contenu de 'content' et free() cet element
+*/
+
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	if (!lst || !new)
+	if (!lst)
 		return ;
-	new -> next = *lst;
-	*lst = new;
+	(*del)(lst->content);
+	free(lst);
 }

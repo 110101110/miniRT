@@ -3,25 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 20:52:34 by qizhang           #+#    #+#             */
-/*   Updated: 2024/11/24 15:59:12 by qizhang          ###   ########.fr       */
+/*   Created: 2024/07/25 00:20:59 by kevisout          #+#    #+#             */
+/*   Updated: 2024/07/25 00:27:00 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
-#include <unistd.h>
 
+#include "libft.h"
+
+/*
+ft_putstr_fd ecris la chaine de caractere 's' sur la sortie 'fd'.
+On evite de faire un boucle qui fait write() car write est un syscall.
+Et spammer un syscall c'est pas optimisee, donc on calcule la longueur de s
+pour ecrire s avec 1 seul write().
+*/
 void	ft_putstr_fd(char *s, int fd)
 {
-	unsigned int	i;
+	int	i;
 
-	i = 0;
 	if (!s)
 		return ;
+	i = 0;
 	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i ++;
-	}
+		i++;
+	write(fd, s, i);
 }

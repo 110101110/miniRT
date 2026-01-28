@@ -1,24 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_strtok.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/06 16:29:41 by kevisout          #+#    #+#             */
-/*   Updated: 2024/08/06 16:35:35 by kevisout         ###   ########.fr       */
+/*   Created: 2025/01/10 13:24:31 by kevisout          #+#    #+#             */
+/*   Updated: 2025/01/10 13:24:54 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-ft_tolower convertit la lettre 'c' (si c'est une lettre) en minuscule,
-si c'est une majuscule
-*/
-int	ft_tolower(int c)
+char	*ft_strtok(char *str, char *delim)
 {
-	if (c >= 'A' && c <= 'Z')
-		c += 32;
-	return (c);
+	static char	*ptr;
+	char		*ret;
+	int			i;
+
+	if (str)
+		ptr = str;
+	if (!ptr || !*ptr)
+		return (NULL);
+	ret = ptr;
+	i = 0;
+	while (ptr[i])
+	{
+		if (ft_strchr(delim, ptr[i]))
+		{
+			ptr[i++] = '\0';
+			break ;
+		}
+		i++;
+	}
+	ptr += i;
+	return (ret);
 }
