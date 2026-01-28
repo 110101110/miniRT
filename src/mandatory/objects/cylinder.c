@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 18:30:07 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 19:44:03 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/28 16:21:40 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_vec3	get_cy_normal(t_vec3 hit_p, t_cylinder cy)
 	return (normal);
 }
 
-static void	cylinder_calcu(t_ray r, t_cylinder cy, t_cy_data data)
+static void	cylinder_calcu(t_ray r, t_cylinder cy, t_cy_data *data)
 {
 	t_vec3	oc;
 	t_vec3	d_v;
@@ -53,10 +53,10 @@ static void	cylinder_calcu(t_ray r, t_cylinder cy, t_cy_data data)
 	oc = vec_sub(r.origin, cy.center);
 	d_v = vec_sub(r.dir, vec_scale(cy.axis, vec_dot(r.dir, cy.axis)));
 	oc_v = vec_sub(oc, vec_scale(cy.axis, vec_dot(oc, cy.axis)));
-	data.a = vec_dot(d_v, d_v);
-	data.b = 2 * vec_dot(d_v, oc_v);
-	data.c = vec_dot(oc_v, oc_v) - (cy.diamter * cy.diamter / 4);
-	data.disc = data.b * data.b - 4 * data.a * data.c;
+	data->a = vec_dot(d_v, d_v);
+	data->b = 2 * vec_dot(d_v, oc_v);
+	data->c = vec_dot(oc_v, oc_v) - (cy.diamter * cy.diamter / 4);
+	data->disc = data->b * data->b - 4 * data->a * data->c;
 }
 
 double	hit_tube(t_ray ray, t_cylinder cy)
@@ -65,11 +65,12 @@ double	hit_tube(t_ray ray, t_cylinder cy)
 	double		t2;
 	double		m1;
 	double		m2;
-	t_cy_data	data;
+	t_cy_data	*data;
 
+	data = NULL;
 	cylinder_calcu(ray, cy, data);
-	t1 = (-data.b - sqrt(data.disc)) / (2.0 * data.a);
-	t2 = (-data.b + sqrt(data.disc)) / (2.0 * data.a);
+	t1 = (-data->b - sqrt(data->disc)) / (2.0 * data->a);
+	t2 = (-data->b + sqrt(data->disc)) / (2.0 * data->a);
 	m1 = vec_dot(vec_sub(get_hit_p(ray, t1), cy.center), cy.axis);
 	if (t1 > EPSILON && m1 >= -cy.height / 2 && m1 <= cy.height / 2)
 		return (t1);

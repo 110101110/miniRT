@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 23:17:23 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/28 19:00:25 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 // Returns 1 if character is any standard whitespace, else 0.
 int	ft_isspace(int c)
 {
-	return (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r');
 }
 
 // Converts a numeric string to double (handles optional sign and decimal part)
@@ -221,9 +221,9 @@ int	count_mandatory_identifiers(char **file)
 // " ", "\n", "0"-"9", ".", ",", "-", "+"
 int	is_legal(char c)
 {
-	if ((c >= '0' && c <= '9') || ft_isspace(c) || c == '.'
-		|| c == ',' || c == '-' || c == 'A' || c == 'C' || c == 'L'
-		|| c == 's' || c == 'p' || c == 'l' || c == 'c' || c == 'y' || c == '+')
+	if ((c >= '0' && c <= '9') || ft_isspace(c) || c == '.' || c == ','
+		|| c == '-' || c == 'A' || c == 'C' || c == 'L' || c == 's' || c == 'p'
+		|| c == 'l' || c == 'c' || c == 'y' || c == '+')
 		return (1);
 	return (0);
 }
@@ -260,8 +260,8 @@ static int	count_alpha_chars(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if ((line[i] >= 'A' && line[i] <= 'Z')
-			|| (line[i] >= 'a' && line[i] <= 'z'))
+		if ((line[i] >= 'A' && line[i] <= 'Z') || (line[i] >= 'a'
+				&& line[i] <= 'z'))
 			count++;
 		i++;
 	}
@@ -297,8 +297,8 @@ int	one_identifier_per_line(char **file)
 	while (file[i])
 	{
 		first = get_first_non_space(file[i]);
-		if (first != '\0'
-			&& !validate_alpha_count(first, count_alpha_chars(file[i])))
+		if (first != '\0' && !validate_alpha_count(first,
+				count_alpha_chars(file[i])))
 			return (0);
 		i++;
 	}
@@ -384,18 +384,18 @@ static int	is_obj_line(char c)
 static int	add_obj_node(char *line, t_parser *parser)
 {
 	char	**split_content;
-	t_list	*node;
+	t_object	*node;
 
 	split_content = split_rt_fields(line);
 	if (!split_content)
 		return (0);
-	node = ft_lstnew(split_content);
+	node = obj_new(split_content);
 	if (!node)
 	{
 		free_tab(split_content);
 		return (0);
 	}
-	ft_lstadd_back(&parser->obj, node);
+	add_obj_back(&parser->lst, node);
 	return (1);
 }
 
@@ -406,12 +406,12 @@ int	fill_obj(char **file, t_parser *parser)
 	char	first_char;
 
 	i = 0;
-	parser->obj = NULL;
+	parser->lst = NULL;
 	while (file[i])
 	{
 		first_char = get_first_char(file[i]);
-		if (first_char == '\0' || first_char == 'A'
-			|| first_char == 'C' || first_char == 'L')
+		if (first_char == '\0' || first_char == 'A' || first_char == 'C'
+			|| first_char == 'L')
 		{
 			i++;
 			continue ;
@@ -657,17 +657,16 @@ static int	check_cylinder_values(char **content)
 // Validates object-specific numeric constraints after parsing.
 static int	check_object_values(t_parser *parser)
 {
-	t_list	*current;
+	t_object	*current;
 	char	**content;
 
-	current = parser->obj;
+	current = parser->lst;
 	while (current)
 	{
-		content = (char **)current->content;
+		content = current->content;
 		if (!content)
 			return (0);
-		if (is_identifier(content[0], "sp")
-			&& !check_sphere_values(content))
+		if (is_identifier(content[0], "sp") && !check_sphere_values(content))
 			return (0);
 		else if (is_identifier(content[0], "pl")
 			&& !check_plane_values(content))
@@ -925,9 +924,9 @@ static int	parse_single_object(char **content)
 // Parses each object entry in parser->obj.
 int	parse_object_content(t_parser *parser)
 {
-	t_list	*current;
+	t_object	*current;
 
-	current = parser->obj;
+	current = parser->lst;
 	while (current)
 	{
 		if (!current->content || !parse_single_object(current->content))
@@ -1011,7 +1010,9 @@ int	check_ambient_light_values(t_parser *parser)
 	if (!check_float_overflows(parser->ambient[1])
 		|| !check_range_double(ft_atof(parser->ambient[1]), 0.0, 1.0))
 		return (ft_putstr_fd("Error\n\
-A: ambient lighting ratio out of range\n", 2), 0);
+A: ambient lighting ratio out of range\n",
+								2),
+				0);
 	return (1);
 }
 
@@ -1021,7 +1022,9 @@ int	check_camera_values(t_parser *parser)
 {
 	if (!check_vec3_values(parser->camera[2], -1.0, 1.0))
 		return (ft_putstr_fd("Error\n\
-C: camera orientation vector out of range\n", 2), 0);
+C: camera orientation vector out of range\n",
+								2),
+				0);
 	if (!vec3_is_not_zero(parser->camera[2]))
 		return (ft_putstr_fd("Error\nC: orientation vector is null\n", 2), 0);
 	if (!check_int_overflows(parser->camera[3])
@@ -1036,7 +1039,9 @@ int	check_light_values(t_parser *parser)
 	if (!check_float_overflows(parser->light[2])
 		|| !check_range_double(ft_atof(parser->light[2]), 0.0, 1.0))
 		return (ft_putstr_fd("Error\n\
-L: light brightness ratio out of range\n", 2), 0);
+L: light brightness ratio out of range\n",
+								2),
+				0);
 	return (1);
 }
 
@@ -1097,7 +1102,7 @@ void	free_parser(t_parser *parser)
 	free_tab(parser->ambient);
 	free_tab(parser->camera);
 	free_tab(parser->light);
-	ft_lstclear(&parser->obj, (void *)free_tab);
+	parser->lst = NULL;
 }
 
 // Parses an RGB string and stores it as a t_color.
@@ -1161,10 +1166,9 @@ int	store_light_data(char **light, t_light *data)
 }
 
 // Allocates and stores a sphere object into the runtime objects list.
-int	store_sphere_data(char **content, t_data *data)
+int	store_sphere_data(char **content, t_object *obj)
 {
 	t_sphere	*sphere;
-	t_object	*obj_node;
 
 	sphere = (t_sphere *)malloc(sizeof(t_sphere));
 	if (!sphere)
@@ -1172,24 +1176,14 @@ int	store_sphere_data(char **content, t_data *data)
 	sphere->center = store_vec3(content[1]);
 	sphere->diameter = ft_atof(content[2]);
 	sphere->color = store_rgb(content[3]);
-	obj_node = (t_object *)malloc(sizeof(t_object));
-	if (!obj_node)
-	{
-		free(sphere);
-		return (0);
-	}
-	obj_node->type = SPHERE;
-	obj_node->data = sphere;
-	obj_node->next = data->obj;
-	data->obj = obj_node;
+	fill_node(obj, SPHERE, sphere, sphere->color);
 	return (1);
 }
 
 // Allocates and stores a plane object into the runtime objects list.
-int	store_plane_data(char **content, t_data *data)
+int	store_plane_data(char **content, t_object *obj)
 {
 	t_plane		*plane;
-	t_object	*obj_node;
 
 	plane = (t_plane *)malloc(sizeof(t_plane));
 	if (!plane)
@@ -1197,80 +1191,59 @@ int	store_plane_data(char **content, t_data *data)
 	plane->point = store_vec3(content[1]);
 	plane->normal = store_vec3(content[2]);
 	plane->color = store_rgb(content[3]);
-	obj_node = (t_object *)malloc(sizeof(t_object));
-	if (!obj_node)
-	{
-		free(plane);
-		return (0);
-	}
-	obj_node->type = PLANE;
-	obj_node->data = plane;
-	obj_node->next = data->obj;
-	data->obj = obj_node;
+	fill_node(obj, PLANE, plane, plane->color);
 	return (1);
 }
 
 // Allocates and stores a cylinder object into the runtime objects list.
-int	store_cylinder_data(char **content, t_data *data)
+int	store_cylinder_data(char **content, t_object *obj)
 {
 	t_cylinder	*cylinder;
-	t_object	*obj_node;
 
 	cylinder = (t_cylinder *)malloc(sizeof(t_cylinder));
 	if (!cylinder)
 		return (0);
 	cylinder->center = store_vec3(content[1]);
 	cylinder->axis = store_vec3(content[2]);
-	cylinder->diameter = ft_atof(content[3]);
+	cylinder->diamter = ft_atof(content[3]);
 	cylinder->height = ft_atof(content[4]);
 	cylinder->color = store_rgb(content[5]);
-	obj_node = (t_object *)malloc(sizeof(t_object));
-	if (!obj_node)
-	{
-		free(cylinder);
-		return (0);
-	}
-	obj_node->type = CYLINDER;
-	obj_node->data = cylinder;
-	obj_node->next = data->obj;
-	data->obj = obj_node;
+	fill_node(obj, CYLINDER, cylinder, cylinder->color);
 	return (1);
 }
 
 // goofy helper function
-void	init_objects_data(t_list *obj_list, t_data *data, t_list **current)
-{
-	*current = obj_list;
-	data->obj = NULL;
-}
+// we have created a t_object list, now we have to connect data->obj pointer to it
+// void	init_objects_lst(t_object *lst, t_data *data, t_object **current);
 
 // Iterates parsed object list and stores them into the runtime objects list.
-int	store_objects_data(t_list *obj_list, t_data *data)
+int	store_objects_data(t_object **lst, t_data *data)
 {
-	t_list	*current;
+	t_object	*current;
 	char	**content;
 
-	init_objects_data(obj_list, data, &current);
+	current = *lst;
 	while (current)
 	{
-		content = (char **)current->content;
+		content = current->content;
 		if (is_identifier(content[0], "sp"))
 		{
-			if (!store_sphere_data(content, data))
+			if (!store_sphere_data(content, current))
 				return (0);
 		}
 		else if (is_identifier(content[0], "pl"))
 		{
-			if (!store_plane_data(content, data))
+			if (!store_plane_data(content, current))
 				return (0);
 		}
 		else if (is_identifier(content[0], "cy"))
 		{
-			if (!store_cylinder_data(content, data))
+			if (!store_cylinder_data(content, current))
 				return (0);
 		}
 		current = current->next;
 	}
+	data->obj = *lst;
 	return (1);
 }
 
@@ -1283,7 +1256,7 @@ int	store_data(t_parser *parser, t_data *data)
 		return (0);
 	if (!store_light_data(parser->light, &data->light))
 		return (0);
-	if (!store_objects_data(parser->obj, data))
+	if (!store_objects_data(&parser->lst, data))
 		return (0);
 	return (1);
 }

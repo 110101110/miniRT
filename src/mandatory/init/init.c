@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:12:07 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 18:25:30 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/28 17:31:20 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static int	key_hook(int keycode, t_data *data)
 
 int	close_window(t_data *data)
 {
+	// need to free whatever inside data
+	// clean_exit for example
 	if (data->img.img_ptr)
 		mlx_destroy_image(data->mlx, data->img.img_ptr);
 	if (data->win)

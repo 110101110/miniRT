@@ -6,7 +6,7 @@
 #    By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/27 16:13:19 by qizhang          ###   ########.fr        #
+#    Updated: 2026/01/28 17:30:27 by qizhang          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRC_SHARED_FILES = \
 	math/vector_2.c \
 	math/colors.c \
 	utils/errors.c \
-	utils/clean_exit.c
+	utils/clean_exit.c \
+	utils/objects_utils.c\
 
 SRC_MAND_FILES = \
 	mandatory/main.c \
@@ -53,11 +54,13 @@ SRC_MAND_FILES = \
 	mandatory/render/render_utils.c \
 	mandatory/render/light.c \
 	mandatory/render/shadow.c \
-	mandatory/parsing/parser.c \
 	mandatory/objects/sphere.c \
 	mandatory/objects/plane.c \
 	mandatory/objects/cylinder.c\
-	mandatory/objects/hit_object.c
+	mandatory/objects/hit_object.c \
+	mandatory/parsing/parser.c \
+	mandatory/parsing/parser_args.c \
+	mandatory/parsing/parser_debug.c \
 
 # 3. BONUS FILES
 

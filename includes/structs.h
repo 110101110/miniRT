@@ -6,84 +6,85 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 19:49:35 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/28 17:54:56 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "math_tool.h"
+#include "math_tool.h"
 
-typedef struct	s_ambient
+typedef struct s_ambient
 {
-	double		ratio;
-	t_color		color;
-}				t_ambient;
+	double			ratio;
+	t_color			color;
+}					t_ambient;
 
-typedef struct	s_light
+typedef struct s_light
 {
-	t_vec3		origin;
-	double		ratio;
+	t_vec3			origin;
+	double			ratio;
 	// t_vec3		color; not needed in mandatory
-}				t_light;
+}					t_light;
 
-typedef struct	s_sphere
+typedef struct s_sphere
 {
-	t_vec3		center;
-	t_color		color;
-	double		diameter;
-}				t_sphere;
+	t_vec3			center;
+	t_color			color;
+	double			diameter;
+}					t_sphere;
 
-typedef struct	s_plane
+typedef struct s_plane
 {
-	t_vec3		point;
-	t_vec3		normal;
-	t_color		color;
-}				t_plane;
+	t_vec3			point;
+	t_vec3			normal;
+	t_color			color;
+}					t_plane;
 
-typedef struct	s_cylinder
+typedef struct s_cylinder
 {
-	t_vec3	center;
-	t_vec3	axis; //normalised
-	double	diamter;
-	double	height;
-	t_color	color;
-}	t_cylinder;
+	t_vec3			center;
+	t_vec3 axis; // normalised
+	double			diamter;
+	double			height;
+	t_color			color;
+}					t_cylinder;
 
 typedef struct s_cy_data
 {
-	double	a;
-	double	b;
-	double	c;
-	double	disc;
-}			t_cy_data;
+	double			a;
+	double			b;
+	double			c;
+	double			disc;
+}					t_cy_data;
 
-typedef enum	e_type
+typedef enum e_type
 {
 	SPHERE,
 	PLANE,
 	CYLINDER,
-}	t_type;
+}					t_type;
 
 typedef struct s_object
 {
-	t_type	type;
-	void	*data;
-	t_vec3	color;
+	char			**content; // to store the char**
+	t_type			type;
+	void			*data;
+	t_vec3			color;
 	struct s_object	*next;
-}	t_object;
+}					t_object;
 
 typedef struct s_hit
 {
-	double	t;
-	t_vec3	p;
-	t_vec3	n;
-	t_color	rgb;
-}			t_hit;
+	double			t;
+	t_vec3			p;
+	t_vec3			n;
+	t_color			rgb;
+}					t_hit;
 
 typedef struct s_ray
 {
-	t_vec3		origin;
-	t_vec3		dir;
-}				t_ray;
+	t_vec3			origin;
+	t_vec3			dir;
+}					t_ray;
 
 typedef struct s_camera
 {
@@ -91,29 +92,37 @@ typedef struct s_camera
 	t_vec3 dir;    // orientation vector
 	double fov;    // horizontal field of view (angle: 0 - 180)
 
-	t_vec3		up;
-	t_vec3		right;
-	double		viewport_w;
-	double		viewport_h;
-}				t_camera;
+	t_vec3			up;
+	t_vec3			right;
+	double			viewport_w;
+	double			viewport_h;
+}					t_camera;
 
 typedef struct s_img
 {
-	void		*img_ptr;
-	char		*pxl_ptr;
-	int			bpp;
-	int			line_len;
-	int			endian;
-}				t_img;
+	void			*img_ptr;
+	char			*pxl_ptr;
+	int				bpp;
+	int				line_len;
+	int				endian;
+}					t_img;
+
+typedef struct s_parser
+{
+	char			**ambient;
+	char			**camera;
+	char			**light;
+	t_object		*lst;
+}					t_parser;
 
 typedef struct s_data
 {
-	void		*mlx;
-	void		*win;
-	t_img		img;
-	t_camera	cam;
-	t_ray		ray;
-	t_object	*obj;
-	t_light		light;
-	t_ambient	ambient;
-}				t_data;
+	void			*mlx;
+	void			*win;
+	t_img			img;
+	t_camera		cam;
+	t_ray			ray;
+	t_object		*obj;
+	t_light			light;
+	t_ambient		ambient;
+}					t_data;
