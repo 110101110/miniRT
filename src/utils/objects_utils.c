@@ -6,13 +6,13 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 19:13:43 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 18:06:02 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 00:49:46 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// all related functions for s_objects list
+
 t_object	*obj_new(char **content)
 {
 	t_object	*node;

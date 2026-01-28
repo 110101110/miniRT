@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:06 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 19:13:18 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 00:47:54 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int ac, char **av)
 	init_mlx(&data);
 	aspect_ratio = (double)WIDTH / (double)HEIGHT;
 	init_camera(&data.cam, aspect_ratio);
-	// render_scene(&data);
+	render_scene(&data);
 	mlx_loop(data.mlx);
 	return (0);
 }
