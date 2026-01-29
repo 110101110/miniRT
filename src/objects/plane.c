@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 17:04:06 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 19:13:18 by qizhang          ###   ########.fr       */
+/*   Created: 2026/01/16 16:07:19 by qizhang           #+#    #+#             */
+/*   Updated: 2026/01/29 15:40:27 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-int	main(int ac, char **av)
+double	hit_plane(t_ray ray, t_plane pl, t_vec3 *normal)
 {
-	t_data	data;
-	double	aspect_ratio;
+	double	t;
+	double	denom;
+	t_vec3	oc;
 
-	if (parse(ac, av, &data) == 0)
-		return (1);
-	print_data(&data);
-	init_mlx(&data);
-	aspect_ratio = (double)WIDTH / (double)HEIGHT;
-	init_camera(&data.cam, aspect_ratio);
-	// render_scene(&data);
-	mlx_loop(data.mlx);
-	return (0);
+	denom = vec_dot(pl.normal, ray.dir);
+	if (fabs(denom) < EPSILON)
+		return (-1.0);
+	oc = vec_sub(pl.point, ray.origin);
+	t = vec_dot(oc, pl.normal) / denom;
+	if (normal)
+		*normal = pl.normal;
+	return (t);
 }

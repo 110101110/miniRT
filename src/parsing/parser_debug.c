@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 17:52:20 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/28 19:08:28 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:39:34 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 void	print_tab(char **tab)
 {

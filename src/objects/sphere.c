@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:24 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 19:06:50 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:40:14 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 double	hit_sphere(t_ray ray, t_sphere sp, t_vec3 *normal)
 {

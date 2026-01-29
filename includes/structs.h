@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 17:54:56 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:57:04 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_plane
 typedef struct s_cylinder
 {
 	t_vec3			center;
-	t_vec3 axis; // normalised
+	t_vec3 axis;
 	double			diamter;
 	double			height;
 	t_color			color;
@@ -65,7 +65,7 @@ typedef enum e_type
 
 typedef struct s_object
 {
-	char			**content; // to store the char**
+	char			**content;
 	t_type			type;
 	void			*data;
 	t_vec3			color;
@@ -88,9 +88,9 @@ typedef struct s_ray
 
 typedef struct s_camera
 {
-	t_vec3 origin; // x, y, z coordinates of the viewpoint
-	t_vec3 dir;    // orientation vector
-	double fov;    // horizontal field of view (angle: 0 - 180)
+	t_vec3 origin;
+	t_vec3 dir;
+	double fov;
 
 	t_vec3			up;
 	t_vec3			right;

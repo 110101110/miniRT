@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 16:14:03 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 18:25:22 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:33:24 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 // Handle the "Edge Case": If camera points exactly Up or Down,
 // vec_cross returns (0,0,0). We'll add a fix for this during parsing.

@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 01:01:30 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 18:28:30 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:39:11 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 t_vec3	diffuse_light(t_color color, t_vec3 hit_p, t_vec3 normal,
 		t_light *light)

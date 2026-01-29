@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 18:30:07 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 16:21:40 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:35:23 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 static double	find_min_t(double t1, double t2, double t3)
 {
@@ -65,12 +65,11 @@ double	hit_tube(t_ray ray, t_cylinder cy)
 	double		t2;
 	double		m1;
 	double		m2;
-	t_cy_data	*data;
+	t_cy_data	data;
 
-	data = NULL;
-	cylinder_calcu(ray, cy, data);
-	t1 = (-data->b - sqrt(data->disc)) / (2.0 * data->a);
-	t2 = (-data->b + sqrt(data->disc)) / (2.0 * data->a);
+	cylinder_calcu(ray, cy, &data);
+	t1 = (-data.b - sqrt(data.disc)) / (2.0 * data.a);
+	t2 = (-data.b + sqrt(data.disc)) / (2.0 * data.a);
 	m1 = vec_dot(vec_sub(get_hit_p(ray, t1), cy.center), cy.axis);
 	if (t1 > EPSILON && m1 >= -cy.height / 2 && m1 <= cy.height / 2)
 		return (t1);

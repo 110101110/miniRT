@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 19:00:25 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:39:24 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 // Returns 1 if character is any standard whitespace, else 0.
 int	ft_isspace(int c)
@@ -383,7 +383,7 @@ static int	is_obj_line(char c)
 // Creates and appends a new object node (split content) to parser->obj.
 static int	add_obj_node(char *line, t_parser *parser)
 {
-	char	**split_content;
+	char		**split_content;
 	t_object	*node;
 
 	split_content = split_rt_fields(line);
@@ -658,7 +658,7 @@ static int	check_cylinder_values(char **content)
 static int	check_object_values(t_parser *parser)
 {
 	t_object	*current;
-	char	**content;
+	char		**content;
 
 	current = parser->lst;
 	while (current)
@@ -1108,15 +1108,17 @@ void	free_parser(t_parser *parser)
 // Parses an RGB string and stores it as a t_color.
 t_color	store_rgb(char *str)
 {
-	t_color	color;
+	int		value[3];
 	char	**rgb_values;
+	t_color	color;
 
 	rgb_values = ft_split(str, ',');
 	if (!rgb_values)
-		return ((t_color){0, 0, 0});
-	color.x = (unsigned char)ft_atoi(rgb_values[0]);
-	color.y = (unsigned char)ft_atoi(rgb_values[1]);
-	color.z = (unsigned char)ft_atoi(rgb_values[2]);
+		return (color_init(0, 0, 0));
+	value[0] = (unsigned char)ft_atoi(rgb_values[0]);
+	value[1] = (unsigned char)ft_atoi(rgb_values[1]);
+	value[2] = (unsigned char)ft_atoi(rgb_values[2]);
+	color = color_init(value[0], value[1], value[2]);
 	free_tab(rgb_values);
 	return (color);
 }
@@ -1132,15 +1134,17 @@ int	store_ambient_lightning_data(char **ambient, t_ambient *data)
 // Parses a vec3 string and stores it into a t_vec3.
 t_vec3	store_vec3(char *str)
 {
+	double	value[3];
 	t_vec3	vec;
 	char	**vec_values;
 
 	vec_values = ft_split(str, ',');
 	if (!vec_values)
-		return ((t_vec3){0.0, 0.0, 0.0});
-	vec.x = ft_atof(vec_values[0]);
-	vec.y = ft_atof(vec_values[1]);
-	vec.z = ft_atof(vec_values[2]);
+		return (vec_init(0, 0, 0));
+	value[0] = ft_atof(vec_values[0]);
+	value[1] = ft_atof(vec_values[1]);
+	value[2] = ft_atof(vec_values[2]);
+	vec = vec_init(value[0], value[1], value[2]);
 	free_tab(vec_values);
 	return (vec);
 }
@@ -1183,13 +1187,14 @@ int	store_sphere_data(char **content, t_object *obj)
 // Allocates and stores a plane object into the runtime objects list.
 int	store_plane_data(char **content, t_object *obj)
 {
-	t_plane		*plane;
+	t_plane	*plane;
 
 	plane = (t_plane *)malloc(sizeof(t_plane));
 	if (!plane)
 		return (0);
 	plane->point = store_vec3(content[1]);
 	plane->normal = store_vec3(content[2]);
+	plane->normal = vec_normalize(plane->normal);
 	plane->color = store_rgb(content[3]);
 	fill_node(obj, PLANE, plane, plane->color);
 	return (1);
@@ -1205,6 +1210,7 @@ int	store_cylinder_data(char **content, t_object *obj)
 		return (0);
 	cylinder->center = store_vec3(content[1]);
 	cylinder->axis = store_vec3(content[2]);
+	cylinder->axis = vec_normalize(cylinder->axis);
 	cylinder->diamter = ft_atof(content[3]);
 	cylinder->height = ft_atof(content[4]);
 	cylinder->color = store_rgb(content[5]);
@@ -1212,15 +1218,10 @@ int	store_cylinder_data(char **content, t_object *obj)
 	return (1);
 }
 
-// goofy helper function
-// we have created a t_object list, now we have to connect data->obj pointer to it
-// void	init_objects_lst(t_object *lst, t_data *data, t_object **current);
-
-// Iterates parsed object list and stores them into the runtime objects list.
 int	store_objects_data(t_object **lst, t_data *data)
 {
 	t_object	*current;
-	char	**content;
+	char		**content;
 
 	current = *lst;
 	while (current)
