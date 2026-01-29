@@ -6,12 +6,15 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 17:50:50 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 19:05:26 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 00:24:27 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
+/*
+Checks if 'filename' exists and is readable
+*/
 int	check_file_exists(char *filename)
 {
 	int		fd;
