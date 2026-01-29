@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   objects_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 19:13:43 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/29 15:46:59 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 18:53:14 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
-
 
 t_object	*obj_new(char **content)
 {

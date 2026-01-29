@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:06 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/29 16:23:40 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 18:52:40 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int ac, char **av)
 
 	if (parse(ac, av, &data) == 0)
 		return (1);
-	// print_data(&data);
 	init_mlx(&data);
 	aspect_ratio = (double)WIDTH / (double)HEIGHT;
 	init_camera(&data.cam, aspect_ratio);

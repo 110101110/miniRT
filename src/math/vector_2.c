@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:37:35 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/13 00:05:31 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 18:53:44 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,3 @@ t_vec3	vec_normalize(t_vec3 v)
 	res.z = v.z / len;
 	return (res);
 }
-

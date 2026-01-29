@@ -3,10 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:09:36 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/13 01:09:36 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 18:53:00 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minirt.h"
+
+// woah its empty
