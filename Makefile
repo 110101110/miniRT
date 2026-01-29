@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+         #
+#    By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/29 15:28:06 by qizhang          ###   ########.fr        #
+#    Updated: 2026/01/29 18:27:21 by kevisout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,22 @@ SRC_FILES = main.c \
 	parsing/parser.c \
 	parsing/parser_args.c \
 	parsing/parser_debug.c \
+	parsing/parser_utils.c \
+	parsing/parser_file.c \
+	parsing/parser_split.c \
+	parsing/parser_validate.c \
+	parsing/parser_validate2.c \
+	parsing/parser_fill.c \
+	parsing/parser_fill_obj.c \
+	parsing/parser_types.c \
+	parsing/parser_content.c \
+	parsing/parser_objects.c \
+	parsing/parser_range.c \
+	parsing/parser_check.c \
+	parsing/parser_check_obj.c \
+	parsing/parser_store.c \
+	parsing/parser_store_obj.c \
+	parsing/parser_free.c \
 
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
