@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 17:50:50 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 15:40:04 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 19:05:26 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,24 @@ int	check_file_exists(char *filename)
 int	parse_arguments(int ac, char **av)
 {
 	if (ac != 2)
+	{
+		ft_putstr_fd("Error\ninvalid number of arguments\n", 2);
 		return (0);
+	}
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 3, ".rt", 4) != 0)
+	{
+		ft_putstr_fd("Error\nfile extension is not .rt\n", 2);
 		return (0);
+	}
 	if (ft_strlen(av[1]) < 4)
+	{
+		ft_putstr_fd("Error\nfile name is too short\n", 2);
 		return (0);
+	}
 	if (!check_file_exists(av[1]))
+	{
+		ft_putstr_fd("Error\nfile does not exist or is not readable\n", 2);
 		return (0);
+	}
 	return (1);
 }
