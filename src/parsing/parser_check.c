@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:32 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/29 18:41:48 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ int	check_ambient_light_values(t_parser *parser)
 	if (!check_float_overflows(parser->ambient[1])
 		|| !check_range_double(ft_atof(parser->ambient[1]), 0.0, 1.0))
 		return (ft_putstr_fd("Error\n\
-A: ambient lighting ratio out of range\n",
-								2),
-				0);
+A: ambient lighting ratio out of range\n", 2), 0);
 	return (1);
 }
 
@@ -84,9 +82,7 @@ int	check_camera_values(t_parser *parser)
 {
 	if (!check_vec3_values(parser->camera[2], -1.0, 1.0))
 		return (ft_putstr_fd("Error\n\
-C: camera orientation vector out of range\n",
-								2),
-				0);
+C: camera orientation vector out of range\n", 2), 0);
 	if (!vec3_is_not_zero(parser->camera[2]))
 		return (ft_putstr_fd("Error\nC: orientation vector is null\n", 2), 0);
 	if (!check_int_overflows(parser->camera[3])
@@ -101,8 +97,6 @@ int	check_light_values(t_parser *parser)
 	if (!check_float_overflows(parser->light[2])
 		|| !check_range_double(ft_atof(parser->light[2]), 0.0, 1.0))
 		return (ft_putstr_fd("Error\n\
-L: light brightness ratio out of range\n",
-								2),
-				0);
+L: light brightness ratio out of range\n", 2), 0);
 	return (1);
 }
