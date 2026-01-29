@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/29 15:57:04 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 18:49:25 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_plane
 typedef struct s_cylinder
 {
 	t_vec3			center;
-	t_vec3 axis;
+	t_vec3			axis;
 	double			diamter;
 	double			height;
 	t_color			color;
@@ -88,14 +88,14 @@ typedef struct s_ray
 
 typedef struct s_camera
 {
-	t_vec3 origin;
-	t_vec3 dir;
-	double fov;
+	t_vec3	origin;
+	t_vec3	dir;
+	double	fov;
 
-	t_vec3			up;
-	t_vec3			right;
-	double			viewport_w;
-	double			viewport_h;
+	t_vec3	up;
+	t_vec3	right;
+	double	viewport_w;
+	double	viewport_h;
 }					t_camera;
 
 typedef struct s_img

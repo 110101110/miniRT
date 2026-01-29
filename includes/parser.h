@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:32:06 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/29 18:47:35 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,5 @@ int		store_objects_data(t_object **lst, t_data *data);
 /* parser_free.c */
 void	free_tab(char **tab);
 void	free_parser(t_parser *parser);
-
 
 #endif

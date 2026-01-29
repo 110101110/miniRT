@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   math_tool.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 18:17:41 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/29 15:32:45 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 18:48:12 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MATH_TOOL_H
-#define MATH_TOOL_H
+# define MATH_TOOL_H
 
 # include <math.h>
 
 # define EPSILON 1e-6
 
-typedef struct	s_vec3
+typedef struct s_vec3
 {
 	double	x;
 	double	y;
 	double	z;
 }			t_vec3;
 
-typedef t_vec3 t_color;
+typedef t_vec3	t_color;
 
 // vector math functions
 t_vec3	vec_init(double x, double y, double z);
