@@ -6,7 +6,7 @@
 #    By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/29 18:27:21 by kevisout         ###   ########.fr        #
+#    Updated: 2026/01/29 18:46:18 by kevisout         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRC_FILES = main.c \
 	parsing/parser_split.c \
 	parsing/parser_validate.c \
 	parsing/parser_validate2.c \
+	parsing/parser_validate3.c \
 	parsing/parser_fill.c \
 	parsing/parser_fill_obj.c \
 	parsing/parser_types.c \

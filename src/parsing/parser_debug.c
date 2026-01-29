@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 17:52:20 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:42:46 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/29 18:45:49 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@
 // 		else if (obj->type == CYLINDER)
 // 		{
 // 			c = (t_cylinder *)obj->data;
-// 			printf("Cylinder\n\tCenter: (%f, %f, %f)\n\t\
-//Axis: (%f, %f,%f)\n\tDia: %f, Height: %f\n", c->center.x, c->center.y,
+// 			printf("Cylinder\n\tCenter:
+//(%f, %f, %f)\n\tAxis: (%f, %f,%f)\n\tDia: %f, Height: %f\n", c->center.x, c->center.y,
 // 				c->center.z, c->axis.x, c->axis.y, c->axis.z, c->diamter,
 // 				c->height);
 // 		}
