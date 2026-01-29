@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 00:18:48 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 19:01:10 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:38:38 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 #include <math.h>
 
 static int	trace_ray(t_ray ray, t_data *data)

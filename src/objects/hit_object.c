@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 00:32:21 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 19:41:15 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:36:42 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 t_vec3	get_hit_p(t_ray r, double t)
 {

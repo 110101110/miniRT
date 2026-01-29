@@ -6,7 +6,7 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:29:40 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/28 22:37:09 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:57:04 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_vec3			point;
-	t_vec3			normal; //need to be normalised
+	t_vec3			normal;
 	t_color			color;
 }					t_plane;
 
 typedef struct s_cylinder
 {
 	t_vec3			center;
-	t_vec3 axis; // normalised
+	t_vec3 axis;
 	double			diamter;
 	double			height;
 	t_color			color;
@@ -89,7 +89,7 @@ typedef struct s_ray
 typedef struct s_camera
 {
 	t_vec3 origin;
-	t_vec3 dir;    // need to be normalised
+	t_vec3 dir;
 	double fov;
 
 	t_vec3			up;

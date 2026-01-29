@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 17:56:03 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 18:29:44 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:39:01 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 // get ray through each pixel
 // (x,y) pixel coordinate

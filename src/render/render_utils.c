@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   plane.c                                            :+:      :+:    :+:   */
+/*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/16 16:07:19 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/27 19:06:54 by qizhang          ###   ########.fr       */
+/*   Created: 2026/01/13 00:21:46 by qizhang           #+#    #+#             */
+/*   Updated: 2026/01/29 15:38:50 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
-double	hit_plane(t_ray ray, t_plane pl, t_vec3 *normal)
+void	img_pix_put(t_img *img, int x, int y, int color)
 {
-	double	t;
-	double	denom;
-	t_vec3	oc;
+	char	*dst;
+	int		offset;
 
-	denom = vec_dot(pl.normal, ray.dir);
-	if (fabs(denom) < EPSILON)
-		return (-1.0);
-	oc = vec_sub(pl.point, ray.origin);
-	t = vec_dot(oc, pl.normal) / denom;
-	if (normal)
-		*normal = pl.normal;
-	return (t);
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return ;
+	offset = (y * img->line_len) + (x * (img->bpp / 8));
+	dst = img->pxl_ptr + offset;
+	*(unsigned int *)dst = color;
 }

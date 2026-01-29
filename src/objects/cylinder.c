@@ -6,11 +6,11 @@
 /*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 18:30:07 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/29 00:49:27 by qizhang          ###   ########.fr       */
+/*   Updated: 2026/01/29 15:35:23 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 static double	find_min_t(double t1, double t2, double t3)
 {
