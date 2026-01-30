@@ -6,13 +6,13 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:30:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:43:58 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 02:04:27 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// Ensures object identifier characters match their expected second letter.
+// Checks if the second letter of identifier is correct
 static int	check_obj_char(char c, char next)
 {
 	if (c == 's' && next != 'p')
@@ -24,7 +24,7 @@ static int	check_obj_char(char c, char next)
 	return (1);
 }
 
-// Scans a line to ensure object identifiers only appear as sp/pl/cy.
+// Checks if 'line' starts with a valid object identifier
 static int	check_line_objects(char *line)
 {
 	int	y;

@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:32 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 02:06:14 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_isspace(int c)
 		|| c == '\r');
 }
 
-// Converts a numeric string to double (handles optional sign and decimal part)
+// atoi but f for float (actually a double but atof sounds better)
 double	ft_atof(const char *str)
 {
 	double	res;

@@ -6,14 +6,20 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:43 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 02:02:54 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// Top-level file parsing pipeline:
-// validate format, split, parse, and range-check.
+// Checks if somethins is wrong with 'file' content:
+// - Count numbers of A, C, L identifiers
+// - Detect illegal characters
+// - Ensure one identifier per line
+// - Detect illegal object identifiers (could be mix of valid chars)
+// - Fill 'parser' struct with content of 'file'
+// - Checks line by line if contents are valid
+// - Checks if numeric values are in valid ranges
 int	parse_file(char **file, t_parser *parser)
 {
 	if (!count_mandatory_identifiers(file))
@@ -33,7 +39,7 @@ int	parse_file(char **file, t_parser *parser)
 	return (1);
 }
 
-// Stores all parsed entities into the runtime scene struct.
+// Stores 'parser' data into 'data' struct.
 int	store_data(t_parser *parser, t_data *data)
 {
 	if (!store_ambient_lightning_data(parser->ambient, &data->ambient))
@@ -48,7 +54,10 @@ int	store_data(t_parser *parser, t_data *data)
 }
 
 // Main parse entrypoint:
-// validate arguments, parse file, and populate runtime data.
+// - Parse ac, av
+// - Convert file into char**
+// - Parse that array
+// - Store parsed data into t_data struct
 int	parse(int ac, char **av, t_data *data)
 {
 	char		**file;

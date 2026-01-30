@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:44:30 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 02:05:07 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static char	get_first_non_space(char *line)
 }
 
 // Validates expected alpha count based on the first character case.
+// Useful for ensuring proper identifier formatting.
 static int	validate_alpha_count(char first, int count)
 {
 	if (first >= 'A' && first <= 'Z')

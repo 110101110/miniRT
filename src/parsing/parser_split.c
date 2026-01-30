@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:32 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 02:15:56 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static size_t	collapse_ws(const char *line, char *norm, size_t src)
 	return (dst);
 }
 
-// Duplicates a line, trimming and collapsing whitespace for reliable splitting.
+// Creates a clean copy of 'line', trimming and collapsing whitespace
 static char	*dup_trim_collapse_ws(const char *line)
 {
 	char	*normalized;
@@ -64,7 +64,7 @@ static char	*dup_trim_collapse_ws(const char *line)
 	return (normalized);
 }
 
-// Splits a .rt line into fields after whitespace normalization.
+// Splits 'line' at spaces after normalizing whitespace.
 char	**split_rt_fields(const char *line)
 {
 	char	*normalized;
