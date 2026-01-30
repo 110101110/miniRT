@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:41:48 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 01:11:42 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,31 +41,6 @@ int	check_vec3_values(char *vec, double min, double max)
 	return (1);
 }
 
-// Returns 1 if vec3 is not (0,0,0), else 0.
-int	vec3_is_not_zero(char *vec)
-{
-	char	**parts;
-	double	x;
-	double	y;
-	double	z;
-
-	parts = ft_split(vec, ',');
-	if (!parts)
-		return (0);
-	if (nb_of_elements(parts) != 3)
-	{
-		free_tab(parts);
-		return (0);
-	}
-	x = ft_atof(parts[0]);
-	y = ft_atof(parts[1]);
-	z = ft_atof(parts[2]);
-	free_tab(parts);
-	if (x == 0.0 && y == 0.0 && z == 0.0)
-		return (0);
-	return (1);
-}
-
 // Check ambient lighting ratio [0.0 - 1.0]
 int	check_ambient_light_values(t_parser *parser)
 {
@@ -83,8 +58,6 @@ int	check_camera_values(t_parser *parser)
 	if (!check_vec3_values(parser->camera[2], -1.0, 1.0))
 		return (ft_putstr_fd("Error\n\
 C: camera orientation vector out of range\n", 2), 0);
-	if (!vec3_is_not_zero(parser->camera[2]))
-		return (ft_putstr_fd("Error\nC: orientation vector is null\n", 2), 0);
 	if (!check_int_overflows(parser->camera[3])
 		|| !check_range_int(ft_atoi(parser->camera[3]), 0, 180))
 		return (ft_putstr_fd("Error\nC: FOV out of range\n", 2), 0);

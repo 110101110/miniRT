@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:32 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 00:35:17 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ static int	check_plane_values(char **content)
 {
 	if (!check_vec3_values(content[2], -1.0, 1.0))
 		return (ft_putstr_fd("Error\npl: invalid normal vector value\n", 2), 0);
-	if (!vec3_is_not_zero(content[2]))
-		return (ft_putstr_fd("Error\npl: invalid normal vector value\n", 2), 0);
 	return (1);
 }
 
@@ -39,8 +37,6 @@ static int	check_cylinder_values(char **content)
 	double	val;
 
 	if (!check_vec3_values(content[2], -1.0, 1.0))
-		return (ft_putstr_fd("Error\ncy: invalid axis vector value\n", 2), 0);
-	if (!vec3_is_not_zero(content[2]))
 		return (ft_putstr_fd("Error\ncy: invalid axis vector value\n", 2), 0);
 	val = ft_atof(content[3]);
 	if (!check_float_overflows(content[3]) || val <= 0.0)

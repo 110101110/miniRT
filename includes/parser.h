@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:47:35 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 01:11:46 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int		check_int_overflows(char *str);
 
 /* parser_check.c */
 int		check_vec3_values(char *vec, double min, double max);
-int		vec3_is_not_zero(char *vec);
 int		check_ambient_light_values(t_parser *parser);
 int		check_camera_values(t_parser *parser);
 int		check_light_values(t_parser *parser);
