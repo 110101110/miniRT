@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/30 01:11:42 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/01/30 01:54:52 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	check_vec3_values(char *vec, double min, double max)
 {
 	char	**parts;
-	int		idx;
+	int		i;
 
 	parts = ft_split(vec, ',');
 	if (!parts)
@@ -26,16 +26,16 @@ int	check_vec3_values(char *vec, double min, double max)
 		free_tab(parts);
 		return (0);
 	}
-	idx = 0;
-	while (idx < 3)
+	i = 0;
+	while (i < 3)
 	{
-		if (!is_double(parts[idx]) || !check_float_overflows(parts[idx])
-			|| !check_range_double(ft_atof(parts[idx]), min, max))
+		if (!is_double(parts[i]) || !check_float_overflows(parts[i])
+			|| !check_range_double(ft_atof(parts[i]), min, max))
 		{
 			free_tab(parts);
 			return (0);
 		}
-		idx++;
+		i++;
 	}
 	free_tab(parts);
 	return (1);
