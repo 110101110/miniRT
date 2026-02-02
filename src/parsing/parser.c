@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/30 02:02:54 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:34:52 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 // - Detect illegal characters
 // - Ensure one identifier per line
 // - Detect illegal object identifiers (could be mix of valid chars)
-// - Fill 'parser' struct with content of 'file'
-// - Checks line by line if contents are valid
+// - Fill 'parser' struct with content of 'file', line by line
+// - Checks each content of 'parser' struct for validity
 // - Checks if numeric values are in valid ranges
 int	parse_file(char **file, t_parser *parser)
 {
@@ -57,7 +57,7 @@ int	store_data(t_parser *parser, t_data *data)
 // - Parse ac, av
 // - Convert file into char**
 // - Parse that array
-// - Store parsed data into t_data struct
+// - Store parsed data into t_data struct once parser is validated
 int	parse(int ac, char **av, t_data *data)
 {
 	char		**file;
