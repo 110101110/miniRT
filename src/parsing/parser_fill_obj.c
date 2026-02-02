@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:32 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:06:47 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	add_obj_node(char *line, t_parser *parser)
 	char		**split_content;
 	t_object	*node;
 
-	split_content = split_rt_fields(line);
+	split_content = split_line(line);
 	if (!split_content)
 		return (0);
 	node = obj_new(split_content);

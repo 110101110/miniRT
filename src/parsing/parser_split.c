@@ -6,13 +6,13 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/30 02:15:56 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:27:06 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minirt.h"
 
-// Returns index of the first non-whitespace character in the line.
+// Skip leading whitespace in 'line'.
 static size_t	skip_leading_ws(const char *line)
 {
 	size_t	src;
@@ -23,8 +23,8 @@ static size_t	skip_leading_ws(const char *line)
 	return (src);
 }
 
-// Copies line into norm, collapsing whitespace runs into single spaces.
-static size_t	collapse_ws(const char *line, char *norm, size_t src)
+// Remove extra whitespaces from 'line', copying to 'norm'.
+static size_t	remove_extra_space(const char *line, char *norm, size_t src)
 {
 	size_t	dst;
 	int		in_space;
@@ -51,7 +51,7 @@ static size_t	collapse_ws(const char *line, char *norm, size_t src)
 }
 
 // Creates a clean copy of 'line', trimming and collapsing whitespace
-static char	*dup_trim_collapse_ws(const char *line)
+static char	*create_clean_copy(const char *line)
 {
 	char	*normalized;
 
@@ -60,17 +60,17 @@ static char	*dup_trim_collapse_ws(const char *line)
 	normalized = (char *)malloc(ft_strlen(line) + 1);
 	if (!normalized)
 		return (NULL);
-	collapse_ws(line, normalized, skip_leading_ws(line));
+	remove_extra_space(line, normalized, skip_leading_ws(line));
 	return (normalized);
 }
 
 // Splits 'line' at spaces after normalizing whitespace.
-char	**split_rt_fields(const char *line)
+char	**split_line(const char *line)
 {
 	char	*normalized;
 	char	**split;
 
-	normalized = dup_trim_collapse_ws(line);
+	normalized = create_clean_copy(line);
 	if (!normalized)
 		return (NULL);
 	split = ft_split(normalized, ' ');

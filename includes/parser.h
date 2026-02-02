@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 13:05:42 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/30 01:11:46 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:06:47 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		is_double(char *str);
 char	**copy_file_to_array(char *filename);
 
 /* parser_split.c */
-char	**split_rt_fields(const char *line);
+char	**split_line(const char *line);
 
 /* parser_validate.c */
 int		count_mandatory_identifiers(char **file);

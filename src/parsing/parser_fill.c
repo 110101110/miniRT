@@ -6,7 +6,7 @@
 /*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:32 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/02 14:06:47 by kevisout         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	fill_ambient_content(char **file, t_parser *parser)
 	line = where_is(file, 'A');
 	if (line == -1)
 		return (0);
-	parser->ambient = split_rt_fields(file[line]);
+	parser->ambient = split_line(file[line]);
 	if (!parser->ambient)
 		return (0);
 	return (1);
@@ -34,7 +34,7 @@ int	fill_camera_content(char **file, t_parser *parser)
 	line = where_is(file, 'C');
 	if (line == -1)
 		return (0);
-	parser->camera = split_rt_fields(file[line]);
+	parser->camera = split_line(file[line]);
 	if (!parser->camera)
 		return (0);
 	return (1);
@@ -48,7 +48,7 @@ int	fill_light_content(char **file, t_parser *parser)
 	line = where_is(file, 'L');
 	if (line == -1)
 		return (0);
-	parser->light = split_rt_fields(file[line]);
+	parser->light = split_line(file[line]);
 	if (!parser->light)
 		return (0);
 	return (1);
