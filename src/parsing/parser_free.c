@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 18:00:00 by kevisout          #+#    #+#             */
-/*   Updated: 2026/01/29 18:26:32 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/07 15:33:53 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ void	free_parser(t_parser *parser)
 	free_tab(parser->ambient);
 	free_tab(parser->camera);
 	free_tab(parser->light);
-	parser->lst = NULL;
+	// parser->lst = NULL;
 }

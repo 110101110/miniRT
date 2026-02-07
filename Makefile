@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+         #
+#    By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/05 16:17:44 by qizhang           #+#    #+#              #
-#    Updated: 2026/01/29 18:46:18 by kevisout         ###   ########.fr        #
+#    Updated: 2026/02/07 15:30:16 by qizhang          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,19 @@ SRC_DIR	= src
 INC_DIR	= includes
 OBJ_DIR	= obj
 LIBFT_DIR = libft
-# MLX_DIR = mlx_macos
-MLX_DIR = mlx_linux
+MLX_DIR = mlx_macos
+# MLX_DIR = mlx_linux
 
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_DIR)/libmlx.a
 
 # mlx library
 # Linux
-MLX_FLAG = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
-INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR) -Isrc/math
-# Macos
-# MLX_FLAG = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+# MLX_FLAG = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 # INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR) -Isrc/math
+# Macos
+MLX_FLAG = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+INCLUDES = -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR) -Isrc/math
 
 SRC_FILES = main.c \
 	math/vector_1.c \

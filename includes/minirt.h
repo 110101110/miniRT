@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 17:04:46 by qizhang           #+#    #+#             */
-/*   Updated: 2026/01/29 18:48:24 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/07 15:27:11 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-// # include "../mlx_macos/mlx.h"
-# include "../mlx_linux/mlx.h"
+# include "../mlx_macos/mlx.h"
+// # include "../mlx_linux/mlx.h"
 # include "math_tool.h"
 # include "parser.h"
 # include <stdbool.h>
@@ -27,9 +27,9 @@
 # define HEIGHT 720
 
 //for linux
-# define KEY_ESC 65307
+// # define KEY_ESC 65307
 //for mac
-// # define KEY_ESC 53
+# define KEY_ESC 53
 
 // init win
 void		init_mlx(t_data *data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kevisout <kevisout@student.42.fr>          +#+  +:+       +#+        */
+/*   By: qizhang <qizhang@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 01:10:09 by qizhang           #+#    #+#             */
-/*   Updated: 2026/02/02 14:34:52 by kevisout         ###   ########.fr       */
+/*   Updated: 2026/02/07 15:34:04 by qizhang          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	parse(int ac, char **av, t_data *data)
 	if (!store_data(&parser, data))
 	{
 		free_parser(&parser);
+		clean_exit(data);
 		free_tab(file);
 		return (0);
 	}
